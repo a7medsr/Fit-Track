@@ -11,6 +11,11 @@ android {
             minorApiLevel = 1
         }
     }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
+        isCoreLibraryDesugaringEnabled = true
+    }
 
     defaultConfig {
         applicationId = "com.example.fittrack"
@@ -49,4 +54,5 @@ dependencies {
     ksp(libs.room.compiler)
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.2")
 }
