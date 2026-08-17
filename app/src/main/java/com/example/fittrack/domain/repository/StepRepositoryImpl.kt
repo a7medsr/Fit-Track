@@ -18,6 +18,23 @@ class StepRepositoryImpl @Inject constructor(
             entity?.let { DailySteps(it.date, it.stepCount) }
         }
     }
+    override suspend fun seedMockDataIfNeeded() {
+        if (stepDao.getRowCount() > 5) return
+
+        val today = LocalDate.now()
+        for (i in 1..60) {
+            val date = today.minusDays(i.toLong())
+            val randomSteps = (3000..15000).random()
+            stepDao.upsert(
+                StepEntity(
+                    date = date.toString(),
+                    stepCount = randomSteps,
+                    sensorBaseline = randomSteps,
+                    lastUpdated = System.currentTimeMillis()
+                )
+            )
+        }
+    }
     override suspend fun syncTodaySteps(rawSensorValue: Int): DailySteps {
         val today = LocalDate.now().toString()
         val existing = stepDao.getStepsForDate(today).firstOrNull()

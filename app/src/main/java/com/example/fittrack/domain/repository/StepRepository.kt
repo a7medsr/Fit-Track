@@ -8,4 +8,6 @@ interface StepRepository {
     fun getStepsInRange(startDate: String, endDate: String): Flow<List<DailySteps>>
     suspend fun updateSteps(date: String, stepCount: Int, sensorBaseline: Int)
     suspend fun syncTodaySteps(rawSensorValue: Int): DailySteps
+
+    suspend fun seedMockDataIfNeeded()
 }

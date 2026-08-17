@@ -17,4 +17,7 @@ interface StepDao {
 
     @Query("SELECT * FROM daily_steps WHERE date BETWEEN :startDate AND :endDate ORDER BY date ASC")
     fun getStepsInRange(startDate: String, endDate: String): Flow<List<StepEntity>>
+
+    @Query("SELECT COUNT(*) FROM daily_steps")
+    suspend fun getRowCount(): Int
 }

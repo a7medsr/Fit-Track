@@ -43,5 +43,8 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+        findViewById<android.widget.Button>(R.id.openChartsButton).setOnClickListener {
+            startActivity(android.content.Intent(this, com.example.fittrack.ui.charts.ChartsActivity::class.java))
+        }
     }
 }
