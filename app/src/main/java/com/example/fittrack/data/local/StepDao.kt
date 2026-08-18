@@ -20,4 +20,13 @@ interface StepDao {
 
     @Query("SELECT COUNT(*) FROM daily_steps")
     suspend fun getRowCount(): Int
+
+    @Query("SELECT * FROM daily_steps ORDER BY stepCount DESC LIMIT 1")
+    suspend fun getBestDay(): StepEntity?
+
+    @Query("SELECT * FROM daily_steps ORDER BY date DESC LIMIT 7")
+    suspend fun getLastNDays(): List<StepEntity>
+
+    @Query("SELECT * FROM daily_steps WHERE date BETWEEN :startDate AND :endDate")
+    suspend fun getStepsInRangeOnce(startDate: String, endDate: String): List<StepEntity>
 }

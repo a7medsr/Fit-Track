@@ -2,6 +2,7 @@ package com.example.fittrack.domain.repository
 
 import com.example.fittrack.domain.model.DailySteps
 import kotlinx.coroutines.flow.Flow
+import  com.example.fittrack.domain.model.StepRecords
 
 interface StepRepository {
     fun getStepsForDate(date: String): Flow<DailySteps?>
@@ -10,4 +11,5 @@ interface StepRepository {
     suspend fun syncTodaySteps(rawSensorValue: Int): DailySteps
 
     suspend fun seedMockDataIfNeeded()
+    suspend fun getRecords(): StepRecords
 }

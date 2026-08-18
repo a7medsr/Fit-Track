@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="64dp"
+    android:orientation="horizontal"
+    android:background="@android:color/white"
+    android:elevation="8dp">
+
+    <TextView android:id="@+id/navHome" android:text="Home" style="@style/NavItem" />
+    <TextView android:id="@+id/navHistory" android:text="History" style="@style/NavItem" />
+    <TextView android:id="@+id/navLog" android:text="Log" style="@style/NavItem" />
+    <TextView android:id="@+id/navCharts" android:text="Charts" style="@style/NavItem" />
+    <TextView android:id="@+id/navRecords" android:text="Records" style="@style/NavItem" />
+
+</LinearLayout>

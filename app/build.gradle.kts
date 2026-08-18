@@ -56,5 +56,6 @@ dependencies {
     ksp(libs.hilt.compiler)
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.2")
     implementation(libs.mpandroidchart)
+    implementation(libs.androidx.cardview)
 
 }

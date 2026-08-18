@@ -25,6 +25,9 @@
         <activity
             android:name=".ui.charts.ChartsActivity"
             android:exported="false" />
+        <activity
+            android:name=".ui.records.RecordsActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

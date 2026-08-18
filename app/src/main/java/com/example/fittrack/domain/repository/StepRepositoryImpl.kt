@@ -9,6 +9,8 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import kotlinx.coroutines.flow.firstOrNull
 import java.time.LocalDate
+import com.example.fittrack.domain.model.StepRecords
+
 class StepRepositoryImpl @Inject constructor(
     private val stepDao: StepDao
 ) : StepRepository {
@@ -17,6 +19,18 @@ class StepRepositoryImpl @Inject constructor(
         return stepDao.getStepsForDate(date).map { entity ->
             entity?.let { DailySteps(it.date, it.stepCount) }
         }
+    }
+    override suspend fun getRecords(): StepRecords {
+        val bestDay = stepDao.getBestDay()
+        val last7 = stepDao.getLastNDays()
+        val weekTotal = last7.sumOf { it.stepCount }
+
+        return StepRecords(
+            bestDaySteps = bestDay?.stepCount ?: 0,
+            bestDayDate = bestDay?.date ?: "—",
+            bestWeekTotal = weekTotal,
+            bestWeekLabel = "Last 7 days"
+        )
     }
     override suspend fun seedMockDataIfNeeded() {
         if (stepDao.getRowCount() > 5) return

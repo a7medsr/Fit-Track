@@ -13,6 +13,7 @@ activityKtx = "1.13.0"
 constraintlayout = "2.2.2"
 hilt = "2.59"
 mpandroidchart = "v3.1.0"
+cardview = "1.0.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -29,7 +30,7 @@ hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref
 hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 mpandroidchart = { group = "com.github.PhilJay", name = "MPAndroidChart", version.ref = "mpandroidchart" }
-
+androidx-cardview = { group = "androidx.cardview", name = "cardview", version.ref = "cardview" }
 
 
 [plugins]
