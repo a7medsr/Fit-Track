@@ -7,7 +7,8 @@ import androidx.core.content.ContextCompat
 import com.example.fittrack.R
 import com.example.fittrack.ui.charts.ChartsActivity
 import com.example.fittrack.ui.records.RecordsActivity
-
+import com.example.fittrack.ui.logworkout.LogWorkoutActivity
+import com.example.fittrack.ui.history.HistoryActivity
 enum class NavTab { HOME, HISTORY, LOG, CHARTS, RECORDS }
 
 object NavBarHelper {
@@ -36,6 +37,12 @@ object NavBarHelper {
         }
         home.setOnClickListener {
             if (current != NavTab.HOME) activity.finish()
+        }
+        log.setOnClickListener {
+            if (current != NavTab.LOG) activity.startActivity(Intent(activity, LogWorkoutActivity::class.java))
+        }
+        history.setOnClickListener {
+            if (current != NavTab.HISTORY) activity.startActivity(Intent(activity, HistoryActivity::class.java))
         }
     }
 }

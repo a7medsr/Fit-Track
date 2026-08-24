@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.example.fittrack.data.local.AppDatabase
 import com.example.fittrack.data.local.StepDao
+import com.example.fittrack.data.local.WorkoutDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,11 +23,17 @@ object DatabaseModule {
             context,
             AppDatabase::class.java,
             "fittrack_database"
-        ).build()
+        )
+            .fallbackToDestructiveMigration()
+            .build()
     }
 
     @Provides
     fun provideStepDao(database: AppDatabase): StepDao {
         return database.stepDao()
+    }
+    @Provides
+    fun provideWorkoutDao(database: AppDatabase): WorkoutDao {
+        return database.workoutDao()
     }
 }

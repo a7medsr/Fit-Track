@@ -39,13 +39,14 @@ class StepProgressRingView @JvmOverloads constructor(
         )
         canvas.drawArc(rect, -90f, 360f, false, trackPaint)
 
+        val green = ContextCompat.getColor(context, R.color.accent_green)
+        val blue = ContextCompat.getColor(context, R.color.accent_blue)
+        val safeProgress = progress.coerceAtLeast(0.01f) // avoid a 0-length gradient
+
         progressPaint.shader = SweepGradient(
             width / 2f, height / 2f,
-            intArrayOf(
-                ContextCompat.getColor(context, R.color.accent_green),
-                ContextCompat.getColor(context, R.color.accent_blue)
-            ),
-            null
+            intArrayOf(green, blue, blue),
+            floatArrayOf(0f, safeProgress, 1f)
         )
         canvas.drawArc(rect, -90f, 360f * progress, false, progressPaint)
     }

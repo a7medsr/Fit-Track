@@ -55,10 +55,9 @@ class StepRepositoryImpl @Inject constructor(
 
         val baseline = when {
             existing == null -> rawSensorValue
-            rawSensorValue < existing.sensorBaseline -> rawSensorValue
+            rawSensorValue < existing.sensorBaseline -> rawSensorValue - existing.stepCount
             else -> existing.sensorBaseline
         }
-
         val computedSteps = rawSensorValue - baseline
 
         stepDao.upsert(

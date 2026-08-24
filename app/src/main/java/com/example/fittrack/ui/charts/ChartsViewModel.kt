@@ -10,6 +10,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
@@ -21,9 +22,10 @@ data class ChartsSummary(
     val bestDayDate: String,
     val bestWeekTotal: Int,
     val bestMonthTotal: Int,
-    val canGoForward: Boolean
+    val canGoForward: Boolean,
+    val trendWeeks: List<Pair<String, Int>>,   // NEW: last 4 weeks' totals
+    val currentStreak: Int                      // NEW: consecutive days with steps > 0
 )
-
 @HiltViewModel
 class ChartsViewModel @Inject constructor(
     private val stepRepository: StepRepository,
@@ -55,7 +57,7 @@ class ChartsViewModel @Inject constructor(
 
     private suspend fun loadWeek() {
         _uiState.value = UiState.Loading
-
+        val (trend, streak) = calculateTrendAndStreak()
         val today = LocalDate.now()
         val weekStart = today.plusWeeks(weekOffset.toLong()).minusDays(today.dayOfWeek.value.toLong() - 1)
         val weekEnd = weekStart.plusDays(6)
@@ -80,8 +82,31 @@ class ChartsViewModel @Inject constructor(
                 bestDayDate = best?.date ?: "—",
                 bestWeekTotal = weekTotal,
                 bestMonthTotal = monthTotal,
-                canGoForward = weekOffset < 0
+                canGoForward = weekOffset < 0,
+                trendWeeks = trend,
+                currentStreak = streak
             )
         )
+    }
+    private suspend fun calculateTrendAndStreak(): Pair<List<Pair<String, Int>>, Int> {
+        val today = LocalDate.now()
+        val trend = (3 downTo 0).map { weeksAgo ->
+            val start = today.minusWeeks(weeksAgo.toLong()).minusDays(today.dayOfWeek.value.toLong() - 1)
+            val end = start.plusDays(6)
+            val total = stepDao.getStepsInRangeOnce(start.toString(), end.toString()).sumOf { it.stepCount }
+            "W${4 - weeksAgo}" to total
+        }
+
+        var streak = 0
+        var checkDate = today
+        while (true) {
+            val entry = stepDao.getStepsForDate(checkDate.toString()).firstOrNull()
+            if (entry != null && entry.stepCount > 0) {
+                streak++
+                checkDate = checkDate.minusDays(1)
+            } else break
+        }
+
+        return trend to streak
     }
 }

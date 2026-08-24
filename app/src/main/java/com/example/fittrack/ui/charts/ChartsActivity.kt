@@ -22,7 +22,9 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.highlight.Highlight
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-
+import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
 @AndroidEntryPoint
 class ChartsActivity : AppCompatActivity() {
 
@@ -42,6 +44,11 @@ class ChartsActivity : AppCompatActivity() {
         val bestDayStat = findViewById<TextView>(R.id.bestDayStat)
         val bestWeekStat = findViewById<TextView>(R.id.bestWeekStat)
         val bestMonthStat = findViewById<TextView>(R.id.bestMonthStat)
+        val trendLineChart = findViewById<LineChart>(R.id.trendLineChart)
+        val streakValue = findViewById<TextView>(R.id.streakValue)
+        trendLineChart.description.isEnabled = false
+        trendLineChart.legend.isEnabled = false
+        trendLineChart.axisRight.isEnabled = false
 
         findViewById<TextView>(R.id.prevWeekBtn).setOnClickListener { viewModel.goToPreviousWeek() }
         findViewById<TextView>(R.id.nextWeekBtn).setOnClickListener { viewModel.goToNextWeek() }
@@ -92,6 +99,27 @@ class ChartsActivity : AppCompatActivity() {
                             bestDayStat.text = "${summary.bestDaySteps}"
                             bestWeekStat.text = "${summary.bestWeekTotal}"
                             bestMonthStat.text = "${summary.bestMonthTotal}"
+                            barChart.animateY(600)
+
+                            val trendEntries = summary.trendWeeks.mapIndexed { index, (_, total) ->
+                                Entry(index.toFloat(), total.toFloat())
+                            }
+                            val trendLabels = summary.trendWeeks.map { it.first }
+                            val trendDataSet = LineDataSet(trendEntries, "Weekly Total").apply {
+                                color = resources.getColor(R.color.accent_blue, theme)
+                                setCircleColor(resources.getColor(R.color.accent_blue, theme))
+                                lineWidth = 2.5f
+                                circleRadius = 4f
+                                setDrawValues(false)
+                                mode = LineDataSet.Mode.CUBIC_BEZIER
+                            }
+                            trendLineChart.data = LineData(trendDataSet)
+                            trendLineChart.xAxis.valueFormatter = IndexAxisValueFormatter(trendLabels)
+                            trendLineChart.xAxis.position = XAxis.XAxisPosition.BOTTOM
+                            trendLineChart.animateX(600)
+                            trendLineChart.invalidate()
+
+                            streakValue.text = "${summary.currentStreak} days"
                         }
                         is UiState.Error -> weekLabel.text = "Error loading"
                         else -> Unit

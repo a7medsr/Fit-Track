@@ -33,6 +33,42 @@ class MainActivity : AppCompatActivity() {
 
         val stepRing = findViewById<com.example.fittrack.ui.dashboard.StepProgressRingView>(R.id.stepRing)
         val stepCountBig = findViewById<TextView>(R.id.stepCountBig)
+        val stepGoalLabel = findViewById<TextView>(R.id.stepGoalLabel)
+
+        stepGoalLabel.setOnClickListener {
+            val dialogView = layoutInflater.inflate(R.layout.dialog_set_goal, null)
+            val dialog = androidx.appcompat.app.AlertDialog.Builder(this)
+                .setView(dialogView)
+                .create()
+            dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
+            val customInput = dialogView.findViewById<android.widget.EditText>(R.id.customGoalInput)
+
+            val presets = mapOf(
+                R.id.preset5k to 5000,
+                R.id.preset8k to 8000,
+                R.id.preset10k to 10000,
+                R.id.preset15k to 15000
+            )
+            presets.forEach { (id, value) ->
+                dialogView.findViewById<TextView>(id).setOnClickListener {
+                    viewModel.updateGoal(value)
+                    dialog.dismiss()
+                }
+            }
+
+            dialogView.findViewById<TextView>(R.id.saveBtn).setOnClickListener {
+                val newGoal = customInput.text.toString().toIntOrNull()
+                if (newGoal != null && newGoal > 0) {
+                    viewModel.updateGoal(newGoal)
+                    dialog.dismiss()
+                }
+            }
+
+            dialogView.findViewById<TextView>(R.id.cancelBtn).setOnClickListener { dialog.dismiss() }
+
+            dialog.show()
+        }
 
         com.example.fittrack.ui.common.NavBarHelper.setup(this, com.example.fittrack.ui.common.NavTab.HOME)
 
@@ -42,7 +78,8 @@ class MainActivity : AppCompatActivity() {
                     when (state) {
                         is UiState.Success -> {
                             stepCountBig.text = "${state.data.stepCount}"
-                            stepRing.progress = state.data.stepCount / 10000f
+                            stepGoalLabel.text = "/ ${state.data.goal} steps"
+                            stepRing.progress = state.data.stepCount / state.data.goal.toFloat()
                         }
                         is UiState.Error -> stepCountBig.text = "Error"
                         else -> Unit

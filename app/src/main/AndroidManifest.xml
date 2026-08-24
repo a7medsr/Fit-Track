@@ -28,6 +28,13 @@
         <activity
             android:name=".ui.records.RecordsActivity"
             android:exported="false" />
+        <activity
+            android:name=".ui.logworkout.LogWorkoutActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.history.HistoryActivity"
+            android:exported="false" />
     </application>
+
 
 </manifest>
