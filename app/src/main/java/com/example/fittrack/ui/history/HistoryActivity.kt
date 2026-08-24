@@ -2,6 +2,7 @@ package com.example.fittrack.ui.history
 
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.viewModels
@@ -34,11 +35,14 @@ class HistoryActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_history)
 
-        findViewById<TextView>(R.id.backButton).setOnClickListener { finish() }
+        findViewById<TextView>(R.id.screenTitle).setText(R.string.history_title)
+        findViewById<View>(R.id.backButton).setOnClickListener { finish() }
         NavBarHelper.setup(this, NavTab.HISTORY)
 
         val daysContainer = findViewById<LinearLayout>(R.id.daysContainer)
-        val emptyState = findViewById<TextView>(R.id.emptyState)
+        val emptyState = findViewById<View>(R.id.emptyState)
+        val emptyStateTitle = findViewById<TextView>(R.id.emptyStateTitle)
+        val emptyStateBody = findViewById<TextView>(R.id.emptyStateBody)
         val totalBurned = findViewById<TextView>(R.id.totalBurned)
         val activeDays = findViewById<TextView>(R.id.activeDays)
 
@@ -52,6 +56,9 @@ class HistoryActivity : AppCompatActivity() {
 
                             totalBurned.text = "${days.sumOf { it.totalCalories }} kcal"
                             activeDays.text = "${days.size}"
+                            // Reset the copy in case a previous emission showed the error text.
+                            emptyStateTitle.setText(R.string.history_empty_title)
+                            emptyStateBody.visibility = View.VISIBLE
                             emptyState.visibility = if (days.isEmpty()) View.VISIBLE else View.GONE
 
                             days.forEach { day ->
@@ -63,7 +70,7 @@ class HistoryActivity : AppCompatActivity() {
                                     "${day.workouts.size} ${if (day.workouts.size == 1) "activity" else "activities"}"
 
                                 val details = card.findViewById<LinearLayout>(R.id.detailsContainer)
-                                val arrow = card.findViewById<TextView>(R.id.expandArrow)
+                                val arrow = card.findViewById<ImageView>(R.id.expandArrow)
 
                                 fun renderDetails() {
                                     details.removeAllViews()
@@ -80,7 +87,7 @@ class HistoryActivity : AppCompatActivity() {
                                             notesView.visibility = View.VISIBLE
                                         }
 
-                                        row.findViewById<TextView>(R.id.deleteBtn).setOnClickListener {
+                                        row.findViewById<View>(R.id.deleteBtn).setOnClickListener {
                                             viewModel.deleteWorkout(workout)
                                         }
                                         details.addView(row)
@@ -89,28 +96,29 @@ class HistoryActivity : AppCompatActivity() {
 
                                 val isExpanded = expandedDays.contains(day.date)
                                 details.visibility = if (isExpanded) View.VISIBLE else View.GONE
-                                arrow.text = if (isExpanded) "⌃" else "⌄"
+                                arrow.rotation = if (isExpanded) 180f else 0f
                                 if (isExpanded) renderDetails()
 
                                 card.setOnClickListener {
                                     if (expandedDays.contains(day.date)) {
                                         expandedDays.remove(day.date)
                                         details.visibility = View.GONE
-                                        arrow.text = "⌄"
+                                        arrow.animate().rotation(0f).setDuration(180L).start()
                                     } else {
                                         expandedDays.add(day.date)
                                         renderDetails()
                                         details.visibility = View.VISIBLE
-                                        arrow.text = "⌃"
+                                        arrow.animate().rotation(180f).setDuration(180L).start()
                                     }
                                 }
 
                                 daysContainer.addView(card)
                             }
                         }
-                        is UiState.Error -> emptyState.apply {
-                            text = "Error loading history"
-                            visibility = View.VISIBLE
+                        is UiState.Error -> {
+                            emptyStateTitle.setText(R.string.history_error)
+                            emptyStateBody.visibility = View.GONE
+                            emptyState.visibility = View.VISIBLE
                         }
                         else -> Unit
                     }

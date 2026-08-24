@@ -1,6 +1,8 @@
 package com.example.fittrack
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -10,8 +12,10 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.example.fittrack.ui.charts.ChartsActivity
 import com.example.fittrack.ui.common.UiState
 import com.example.fittrack.ui.dashboard.DashboardViewModel
+import com.example.fittrack.ui.logworkout.LogWorkoutActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -35,7 +39,7 @@ class MainActivity : AppCompatActivity() {
         val stepCountBig = findViewById<TextView>(R.id.stepCountBig)
         val stepGoalLabel = findViewById<TextView>(R.id.stepGoalLabel)
 
-        stepGoalLabel.setOnClickListener {
+        val openGoalDialog = View.OnClickListener {
             val dialogView = layoutInflater.inflate(R.layout.dialog_set_goal, null)
             val dialog = androidx.appcompat.app.AlertDialog.Builder(this)
                 .setView(dialogView)
@@ -68,6 +72,18 @@ class MainActivity : AppCompatActivity() {
             dialogView.findViewById<TextView>(R.id.cancelBtn).setOnClickListener { dialog.dismiss() }
 
             dialog.show()
+        }
+
+        // Reachable from the goal label itself and from the labelled button
+        // below the ring, which is the discoverable entry point.
+        stepGoalLabel.setOnClickListener(openGoalDialog)
+        findViewById<View>(R.id.editGoalBtn).setOnClickListener(openGoalDialog)
+
+        findViewById<View>(R.id.quickLogBtn).setOnClickListener {
+            startActivity(Intent(this, LogWorkoutActivity::class.java))
+        }
+        findViewById<View>(R.id.quickChartsBtn).setOnClickListener {
+            startActivity(Intent(this, ChartsActivity::class.java))
         }
 
         com.example.fittrack.ui.common.NavBarHelper.setup(this, com.example.fittrack.ui.common.NavTab.HOME)

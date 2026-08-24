@@ -2,6 +2,7 @@ package com.example.fittrack.ui.logworkout
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -26,8 +27,7 @@ class LogWorkoutActivity : AppCompatActivity() {
     private val activities = listOf(
         Triple("Running", "🏃", 30),
         Triple("Cycling", "🚴", 30),
-        Triple("Gym", "🏋️", 45),
-        Triple("Walking", "🚶", 20)
+        Triple("Gym", "🏋️", 45)
     )
 
     private val durations = mutableMapOf<String, Int>()
@@ -36,7 +36,8 @@ class LogWorkoutActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_log_workout)
 
-        findViewById<TextView>(R.id.backButton).setOnClickListener { finish() }
+        findViewById<TextView>(R.id.screenTitle).setText(R.string.log_title)
+        findViewById<View>(R.id.backButton).setOnClickListener { finish() }
         NavBarHelper.setup(this, NavTab.LOG)
 
         val container = findViewById<LinearLayout>(R.id.activityCardsContainer)
@@ -44,7 +45,7 @@ class LogWorkoutActivity : AppCompatActivity() {
         val todayTotalCalories = findViewById<TextView>(R.id.todayTotalCalories)
         val todayTotalSummary = findViewById<TextView>(R.id.todayTotalSummary)
 
-        findViewById<TextView>(R.id.viewHistoryBtn).setOnClickListener {
+        findViewById<View>(R.id.viewHistoryBtn).setOnClickListener {
             startActivity(Intent(this, HistoryActivity::class.java))
         }
 
@@ -81,21 +82,36 @@ class LogWorkoutActivity : AppCompatActivity() {
 
             refresh()
             container.addView(card)
+            val autoWalkCard = layoutInflater.inflate(R.layout.item_auto_walking, container, false)
+            container.addView(autoWalkCard)
+            val autoWalkSteps = autoWalkCard.findViewById<TextView>(R.id.autoWalkSteps)
+            val autoWalkCalories = autoWalkCard.findViewById<TextView>(R.id.autoWalkCalories)
+
+            lifecycleScope.launch {
+                repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    viewModel.todaySteps.collect { steps ->
+                        autoWalkSteps.text = "$steps steps today"
+                        autoWalkCalories.text = "≈ ${viewModel.caloriesFromSteps(steps)} kcal"
+                    }
+                }
+            }
         }
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.todayWorkouts.collect { workouts ->
-                    val total = workouts.sumOf { it.calories }
+                    val loggedTotal = workouts.sumOf { it.calories }
+                    val walkingCalories = viewModel.caloriesFromSteps(viewModel.todaySteps.value)
+                    val total = loggedTotal + walkingCalories
+
                     todayTotalCalories.text = "$total kcal"
                     todayTotalSummary.text = if (workouts.isEmpty()) {
-                        "No activities logged yet"
+                        "Walking only · $walkingCalories kcal"
                     } else {
                         workouts.groupBy { it.type }
                             .map { (type, list) -> "$type ×${list.size}" }
-                            .joinToString(" · ")
+                            .joinToString(" · ") + " · Walking"
                     }
-
                     for (i in 0 until container.childCount) {
                         val card = container.getChildAt(i)
                         val type = activities[i].first

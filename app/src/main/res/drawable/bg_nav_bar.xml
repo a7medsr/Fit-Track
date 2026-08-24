@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Hairline separator so the bar reads as a distinct surface. -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/outline" />
+        </shape>
+    </item>
+    <item android:top="@dimen/stroke_width">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/nav_bar_bg" />
+        </shape>
+    </item>
+</layer-list>

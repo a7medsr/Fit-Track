@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Surface card with a green wash, for content the app derives on its own. -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
     <solid android:color="@color/brand_tint" />
-    <corners android:radius="@dimen/radius_pill" />
+    <corners android:radius="@dimen/radius_lg" />
     <stroke android:width="@dimen/stroke_width" android:color="#3322C55E" />
 </shape>

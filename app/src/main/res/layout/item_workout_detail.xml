@@ -3,9 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@drawable/bg_chip"
-    android:padding="12dp"
-    android:layout_marginTop="8dp">
+    android:background="@drawable/bg_detail_row"
+    android:padding="@dimen/space_md"
+    android:layout_marginTop="@dimen/space_sm">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,37 +17,38 @@
             android:id="@+id/detailIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:text="🏃" />
+            android:textSize="18sp"
+            android:text="@string/em_dash" />
 
         <TextView
             android:id="@+id/detailType"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginStart="10dp"
-            android:text="Running"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            android:textColor="@color/text_primary" />
+            android:layout_marginStart="@dimen/space_md"
+            android:text="@string/activity_placeholder"
+            android:textAppearance="@style/TextAppearance.FitTrack.Section"
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/detailStats"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="30 min · 330 kcal"
-            android:textSize="13sp"
-            android:textColor="@color/text_secondary" />
+            android:text="@string/detail_stats_placeholder"
+            android:textAppearance="@style/TextAppearance.FitTrack.Caption"
+            android:textSize="12sp" />
 
-        <TextView
+        <ImageView
             android:id="@+id/deleteBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="✕"
-            android:textSize="16sp"
-            android:textColor="#E5484D"
-            android:padding="6dp"
-            android:layout_marginStart="8dp" />
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:layout_marginStart="@dimen/space_md"
+            android:padding="9dp"
+            android:src="@drawable/ic_close"
+            android:background="@drawable/bg_delete_button"
+            android:contentDescription="@string/cd_delete_activity"
+            android:focusable="true"
+            android:clickable="true" />
 
     </LinearLayout>
 
@@ -55,10 +56,10 @@
         android:id="@+id/detailNotes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_sm"
+        android:textAppearance="@style/TextAppearance.FitTrack.Caption"
         android:textSize="13sp"
-        android:textColor="@color/text_secondary"
         android:textStyle="italic"
-        android:layout_marginTop="6dp"
         android:visibility="gone" />
 
 </LinearLayout>

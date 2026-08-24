@@ -4,75 +4,82 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:background="@drawable/bg_dialog_card"
-    android:padding="24dp">
+    android:padding="@dimen/space_xl">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Set Daily Goal"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:textColor="@color/text_primary" />
+        android:text="@string/goal_dialog_title"
+        android:textAppearance="@style/TextAppearance.FitTrack.Title" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Choose a preset or enter your own"
-        android:textSize="13sp"
-        android:textColor="@color/text_secondary"
-        android:layout_marginTop="4dp" />
+        android:layout_marginTop="@dimen/space_xs"
+        android:text="@string/goal_dialog_subtitle"
+        android:textAppearance="@style/TextAppearance.FitTrack.Caption" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="@dimen/space_xl">
 
-        <TextView android:id="@+id/preset5k" style="@style/GoalChip" android:text="5,000" />
-        <TextView android:id="@+id/preset8k" style="@style/GoalChip" android:text="8,000" android:layout_marginStart="8dp" />
-        <TextView android:id="@+id/preset10k" style="@style/GoalChip" android:text="10,000" android:layout_marginStart="8dp" />
-        <TextView android:id="@+id/preset15k" style="@style/GoalChip" android:text="15,000" android:layout_marginStart="8dp" />
+        <TextView
+            android:id="@+id/preset5k"
+            style="@style/GoalChip"
+            android:text="@string/goal_preset_5k" />
+
+        <TextView
+            android:id="@+id/preset8k"
+            style="@style/GoalChip"
+            android:layout_marginStart="@dimen/space_sm"
+            android:text="@string/goal_preset_8k" />
+
+        <TextView
+            android:id="@+id/preset10k"
+            style="@style/GoalChip"
+            android:layout_marginStart="@dimen/space_sm"
+            android:text="@string/goal_preset_10k" />
+
+        <TextView
+            android:id="@+id/preset15k"
+            style="@style/GoalChip"
+            android:layout_marginStart="@dimen/space_sm"
+            android:text="@string/goal_preset_15k" />
 
     </LinearLayout>
 
     <EditText
         android:id="@+id/customGoalInput"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:hint="Custom amount"
+        style="@style/Widget.FitTrack.Input"
+        android:layout_marginTop="@dimen/space_lg"
+        android:hint="@string/goal_custom_hint"
         android:inputType="number"
-        android:padding="14dp"
-        android:background="@drawable/bg_chip"
-        android:textSize="16sp" />
+        android:maxLines="1"
+        android:importantForAutofill="no" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="24dp">
+        android:layout_marginTop="@dimen/space_xl">
 
         <TextView
             android:id="@+id/cancelBtn"
+            style="@style/Widget.FitTrack.Button.Secondary"
             android:layout_width="0dp"
-            android:layout_height="48dp"
             android:layout_weight="1"
-            android:gravity="center"
-            android:text="Cancel"
-            android:textColor="@color/text_secondary"
-            android:textSize="15sp" />
+            android:text="@string/action_cancel"
+            android:textColor="@color/text_secondary" />
 
         <TextView
             android:id="@+id/saveBtn"
+            style="@style/Widget.FitTrack.Button.Primary"
             android:layout_width="0dp"
-            android:layout_height="48dp"
             android:layout_weight="1"
-            android:gravity="center"
-            android:text="Save Goal"
-            android:textColor="@android:color/white"
-            android:textStyle="bold"
-            android:textSize="15sp"
-            android:background="@drawable/bg_button_primary" />
+            android:layout_marginStart="@dimen/space_md"
+            android:text="@string/action_save_goal" />
 
     </LinearLayout>
 

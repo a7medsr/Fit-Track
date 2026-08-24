@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Shared top bar for the secondary screens. Each activity sets the title on
+  @id/screenTitle so the four screens stay visually identical.
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/app_bar_height">
+
+    <ImageView
+        android:id="@+id/backButton"
+        android:layout_width="@dimen/touch_target"
+        android:layout_height="@dimen/touch_target"
+        android:layout_gravity="center_vertical|start"
+        android:layout_marginStart="@dimen/space_sm"
+        android:padding="12dp"
+        android:src="@drawable/ic_arrow_back"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/cd_back"
+        android:focusable="true"
+        android:clickable="true" />
+
+    <TextView
+        android:id="@+id/screenTitle"
+        style="@style/Widget.FitTrack.AppBarTitle"
+        android:layout_gravity="center"
+        android:text="@string/app_name" />
+
+</FrameLayout>

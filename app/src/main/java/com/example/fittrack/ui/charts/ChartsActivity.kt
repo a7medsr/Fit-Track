@@ -1,7 +1,9 @@
 package com.example.fittrack.ui.charts
 
 import android.os.Bundle
+import android.view.View
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
@@ -35,7 +37,8 @@ class ChartsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_charts)
 
-        findViewById<TextView>(R.id.backButton).setOnClickListener { finish() }
+        findViewById<TextView>(R.id.screenTitle).setText(R.string.charts_title)
+        findViewById<View>(R.id.backButton).setOnClickListener { finish() }
         NavBarHelper.setup(this, NavTab.CHARTS)
 
         val barChart = findViewById<BarChart>(R.id.stepsBarChart)
@@ -49,15 +52,17 @@ class ChartsActivity : AppCompatActivity() {
         trendLineChart.description.isEnabled = false
         trendLineChart.legend.isEnabled = false
         trendLineChart.axisRight.isEnabled = false
+        styleChartForDarkTheme(trendLineChart)
 
-        findViewById<TextView>(R.id.prevWeekBtn).setOnClickListener { viewModel.goToPreviousWeek() }
-        findViewById<TextView>(R.id.nextWeekBtn).setOnClickListener { viewModel.goToNextWeek() }
+        findViewById<View>(R.id.prevWeekBtn).setOnClickListener { viewModel.goToPreviousWeek() }
+        findViewById<View>(R.id.nextWeekBtn).setOnClickListener { viewModel.goToNextWeek() }
 
         barChart.description.isEnabled = false
         barChart.legend.isEnabled = false
         barChart.axisRight.isEnabled = false
         barChart.xAxis.position = XAxis.XAxisPosition.BOTTOM
         barChart.xAxis.setDrawGridLines(false)
+        styleChartForDarkTheme(barChart)
 
         barChart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
             override fun onValueSelected(e: Entry?, h: Highlight?) {
@@ -84,9 +89,9 @@ class ChartsActivity : AppCompatActivity() {
                             val dayLabels = summary.days.map { it.date.takeLast(2) }
 
                             val dataSet = BarDataSet(entries, "Steps").apply {
-                                color = resources.getColor(R.color.accent_green, theme)
+                                color = ContextCompat.getColor(this@ChartsActivity, R.color.brand)
                                 setDrawValues(false)
-                                highLightColor = resources.getColor(R.color.accent_blue, theme)
+                                highLightColor = ContextCompat.getColor(this@ChartsActivity, R.color.brand_bright)
                                 highLightAlpha = 255
                             }
                             barChart.data = BarData(dataSet).apply { barWidth = 0.6f }
@@ -106,8 +111,9 @@ class ChartsActivity : AppCompatActivity() {
                             }
                             val trendLabels = summary.trendWeeks.map { it.first }
                             val trendDataSet = LineDataSet(trendEntries, "Weekly Total").apply {
-                                color = resources.getColor(R.color.accent_blue, theme)
-                                setCircleColor(resources.getColor(R.color.accent_blue, theme))
+                                color = ContextCompat.getColor(this@ChartsActivity, R.color.brand_bright)
+                                setCircleColor(ContextCompat.getColor(this@ChartsActivity, R.color.brand_bright))
+                                setCircleHoleColor(ContextCompat.getColor(this@ChartsActivity, R.color.surface))
                                 lineWidth = 2.5f
                                 circleRadius = 4f
                                 setDrawValues(false)
@@ -126,6 +132,36 @@ class ChartsActivity : AppCompatActivity() {
                     }
                 }
             }
+        }
+    }
+
+    /**
+     * MPAndroidChart defaults to black labels and grid lines, which are invisible
+     * on the dark surfaces this app uses, so every chart gets the same treatment.
+     */
+    private fun styleChartForDarkTheme(chart: com.github.mikephil.charting.charts.BarLineChartBase<*>) {
+        val label = ContextCompat.getColor(this, R.color.text_secondary)
+        val grid = ContextCompat.getColor(this, R.color.chart_grid)
+
+        chart.setNoDataTextColor(label)
+        chart.setDrawGridBackground(false)
+        chart.setDrawBorders(false)
+        chart.setExtraOffsets(4f, 8f, 4f, 4f)
+
+        chart.xAxis.apply {
+            textColor = label
+            axisLineColor = grid
+            gridColor = grid
+            textSize = 11f
+        }
+        chart.axisLeft.apply {
+            textColor = label
+            axisLineColor = grid
+            gridColor = grid
+            textSize = 11f
+            setDrawAxisLine(false)
+            // Anchor at zero so bar heights stay proportional to the values.
+            axisMinimum = 0f
         }
     }
 }

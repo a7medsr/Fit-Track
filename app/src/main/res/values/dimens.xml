@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Spacing scale -->
+    <dimen name="space_xs">4dp</dimen>
+    <dimen name="space_sm">8dp</dimen>
+    <dimen name="space_md">12dp</dimen>
+    <dimen name="space_lg">16dp</dimen>
+    <dimen name="space_xl">24dp</dimen>
+    <dimen name="space_xxl">32dp</dimen>
+
+    <!-- Screen gutters -->
+    <dimen name="screen_margin">16dp</dimen>
+    <dimen name="content_bottom_padding">28dp</dimen>
+
+    <!-- Corner radii -->
+    <dimen name="radius_sm">12dp</dimen>
+    <dimen name="radius_md">16dp</dimen>
+    <dimen name="radius_lg">20dp</dimen>
+    <dimen name="radius_xl">26dp</dimen>
+    <dimen name="radius_pill">100dp</dimen>
+
+    <!-- Components -->
+    <dimen name="app_bar_height">56dp</dimen>
+    <dimen name="bottom_nav_height">72dp</dimen>
+    <dimen name="touch_target">48dp</dimen>
+    <dimen name="button_height">54dp</dimen>
+    <dimen name="stroke_width">1dp</dimen>
+    <dimen name="ring_size">232dp</dimen>
+
+</resources>

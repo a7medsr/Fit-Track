@@ -1,102 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_screen">
+    android:background="@color/bg_base"
+    android:fitsSystemWindows="true">
 
-    <TextView
-        android:id="@+id/backButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="←"
-        android:textSize="22sp"
-        android:padding="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="12dp"
+    <include
+        android:id="@+id/appBar"
+        layout="@layout/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/app_bar_height"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/logTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Log Today's Activity"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:textColor="@color/text_primary"
-        app:layout_constraintTop_toTopOf="@id/backButton"
-        app:layout_constraintBottom_toBottomOf="@id/backButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/backButton"
+        android:clipToPadding="false"
+        android:scrollbars="none"
+        app:layout_constraintTop_toBottomOf="@id/appBar"
         app:layout_constraintBottom_toTopOf="@id/bottomNav">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingHorizontal="16dp"
-            android:paddingBottom="24dp">
+            android:paddingHorizontal="@dimen/screen_margin"
+            android:paddingBottom="@dimen/content_bottom_padding">
 
-            <androidx.cardview.widget.CardView
+            <!-- Today's total: the one green surface on this screen, so it
+                 reads as the headline number. -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:cardCornerRadius="18dp"
-                app:cardElevation="3dp"
-                app:cardBackgroundColor="@color/accent_blue">
+                android:layout_marginTop="@dimen/space_sm"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="@drawable/bg_card_hero"
+                android:padding="@dimen/space_xl">
 
-                <LinearLayout
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/todays_total"
+                    android:textAppearance="@style/TextAppearance.FitTrack.Overline"
+                    android:textColor="@color/on_brand"
+                    android:alpha="0.7" />
+
+                <TextView
+                    android:id="@+id/todayTotalCalories"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_sm"
+                    android:text="@string/calories_placeholder"
+                    android:textAppearance="@style/TextAppearance.FitTrack.Metric"
+                    android:textSize="38sp"
+                    android:textColor="@color/on_brand" />
+
+                <TextView
+                    android:id="@+id/todayTotalSummary"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="20dp"
-                    android:gravity="center">
+                    android:layout_marginTop="@dimen/space_sm"
+                    android:gravity="center"
+                    android:text="@string/no_activities_yet"
+                    android:textAppearance="@style/TextAppearance.FitTrack.Caption"
+                    android:textColor="@color/on_brand"
+                    android:alpha="0.75" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="TODAY'S TOTAL"
-                        android:textSize="12sp"
-                        android:textColor="@android:color/white"
-                        android:alpha="0.85" />
-
-                    <TextView
-                        android:id="@+id/todayTotalCalories"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0 kcal"
-                        android:textSize="32sp"
-                        android:textStyle="bold"
-                        android:textColor="@android:color/white"
-                        android:layout_marginTop="4dp" />
-
-                    <TextView
-                        android:id="@+id/todayTotalSummary"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="No activities logged yet"
-                        android:textSize="13sp"
-                        android:textColor="@android:color/white"
-                        android:alpha="0.9"
-                        android:layout_marginTop="4dp" />
-
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
+            </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Activities"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:textColor="@color/text_primary"
-                android:layout_marginTop="24dp" />
+                android:layout_marginTop="@dimen/space_xl"
+                android:text="@string/section_activities"
+                android:textAppearance="@style/TextAppearance.FitTrack.Section" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_xs"
+                android:text="@string/section_activities_hint"
+                android:textAppearance="@style/TextAppearance.FitTrack.Caption" />
 
             <LinearLayout
                 android:id="@+id/activityCardsContainer"
@@ -104,38 +93,48 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical" />
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="How did today feel? (optional)"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:textColor="@color/text_primary"
-                android:layout_marginTop="24dp" />
+                android:layout_marginTop="@dimen/space_xl"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/section_notes"
+                    android:textAppearance="@style/TextAppearance.FitTrack.Section" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_sm"
+                    android:text="@string/section_notes_optional"
+                    android:textAppearance="@style/TextAppearance.FitTrack.Overline"
+                    android:textColor="@color/text_tertiary" />
+            </LinearLayout>
 
             <EditText
                 android:id="@+id/notesInput"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_marginTop="10dp"
-                android:hint="Felt strong on the hills..."
+                style="@style/Widget.FitTrack.Input"
+                android:layout_height="110dp"
+                android:layout_marginTop="@dimen/space_md"
+                android:hint="@string/notes_hint"
                 android:gravity="top|start"
                 android:inputType="textMultiLine"
-                android:padding="16dp"
-                android:background="@drawable/bg_chip"
+                android:importantForAutofill="no"
                 android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/viewHistoryBtn"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_marginTop="28dp"
-                android:gravity="center"
-                android:text="View Day History"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:textColor="@android:color/white"
-                android:background="@drawable/bg_button_primary" />
+                style="@style/Widget.FitTrack.Button.Secondary"
+                android:layout_marginTop="@dimen/space_xl"
+                android:text="@string/action_view_history"
+                app:drawableStartCompat="@drawable/ic_nav_history"
+                app:drawableTint="@color/text_primary"
+                android:drawablePadding="@dimen/space_sm"
+                android:paddingHorizontal="@dimen/space_lg" />
 
         </LinearLayout>
     </ScrollView>
@@ -144,7 +143,7 @@
         android:id="@+id/bottomNav"
         layout="@layout/bottom_nav"
         android:layout_width="match_parent"
-        android:layout_height="64dp"
+        android:layout_height="@dimen/bottom_nav_height"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />

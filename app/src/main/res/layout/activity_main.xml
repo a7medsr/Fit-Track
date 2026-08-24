@@ -1,85 +1,225 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_screen">
+    android:background="@color/bg_base">
 
-    <TextView
-        android:id="@+id/dashboardTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Dashboard"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:textColor="@color/text_primary"
-        android:layout_marginTop="24dp"
+    <ScrollView
+        android:id="@+id/dashboardScroll"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:scrollbars="none"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <FrameLayout
-        android:id="@+id/ringContainer"
-        android:layout_width="220dp"
-        android:layout_height="220dp"
-        android:layout_marginTop="48dp"
-        app:layout_constraintTop_toBottomOf="@id/dashboardTitle"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <com.example.fittrack.ui.dashboard.StepProgressRingView
-            android:id="@+id/stepRing"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+        app:layout_constraintBottom_toTopOf="@id/bottomNav">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:orientation="vertical"
-            android:gravity="center">
+            android:paddingHorizontal="@dimen/screen_margin"
+            android:paddingBottom="@dimen/content_bottom_padding">
 
+            <!-- Greeting header -->
             <TextView
-                android:id="@+id/stepCountBig"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0"
-                android:textSize="36sp"
-                android:textStyle="bold"
-                android:textColor="@color/text_primary" />
+                android:layout_marginTop="@dimen/space_xl"
+                android:text="@string/dashboard_overline"
+                android:textAppearance="@style/TextAppearance.FitTrack.Overline"
+                android:textColor="@color/brand_bright" />
 
             <TextView
-                android:id="@+id/stepGoalLabel"
+                android:id="@+id/dashboardTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="/ 10,000 steps"
-                android:textSize="13sp"
-                android:textColor="@color/text_secondary" />
+                android:layout_marginTop="2dp"
+                android:text="@string/dashboard_title"
+                android:textAppearance="@style/TextAppearance.FitTrack.Title" />
+
+            <!-- Step ring card -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_lg"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="@drawable/bg_card"
+                android:paddingVertical="@dimen/space_xl"
+                android:paddingHorizontal="@dimen/space_lg">
+
+                <FrameLayout
+                    android:id="@+id/ringContainer"
+                    android:layout_width="@dimen/ring_size"
+                    android:layout_height="@dimen/ring_size">
+
+                    <com.example.fittrack.ui.dashboard.StepProgressRingView
+                        android:id="@+id/stepRing"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="vertical"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/stepCountBig"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/steps_placeholder"
+                            android:textAppearance="@style/TextAppearance.FitTrack.Display" />
+
+                        <TextView
+                            android:id="@+id/stepGoalLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/space_sm"
+                            android:text="@string/goal_placeholder"
+                            android:textAppearance="@style/TextAppearance.FitTrack.Caption"
+                            android:background="?attr/selectableItemBackground"
+                            android:paddingHorizontal="@dimen/space_sm"
+                            android:paddingVertical="@dimen/space_xs"
+                            android:focusable="true"
+                            android:clickable="true" />
+                    </LinearLayout>
+                </FrameLayout>
+
+                <TextView
+                    android:id="@+id/onTrackPill"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_xl"
+                    android:text="@string/on_track"
+                    android:textAppearance="@style/TextAppearance.FitTrack.Overline"
+                    android:textColor="@color/brand_bright"
+                    android:background="@drawable/bg_pill"
+                    android:paddingHorizontal="@dimen/space_lg"
+                    android:paddingVertical="10dp" />
+
+                <!-- Explicit affordance for the goal dialog, which used to be
+                     reachable only by tapping the small goal label. -->
+                <TextView
+                    android:id="@+id/editGoalBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/touch_target"
+                    android:layout_marginTop="@dimen/space_md"
+                    android:gravity="center"
+                    android:text="@string/edit_goal"
+                    android:textSize="14sp"
+                    android:fontFamily="sans-serif-medium"
+                    android:textColor="@color/brand_bright"
+                    app:drawableStartCompat="@drawable/ic_edit"
+                    android:drawablePadding="@dimen/space_sm"
+                    android:paddingHorizontal="@dimen/space_md"
+                    android:background="?attr/selectableItemBackground"
+                    android:focusable="true"
+                    android:clickable="true" />
+
+            </LinearLayout>
+
+            <!-- Quick actions -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_xl"
+                android:layout_marginBottom="@dimen/space_md"
+                android:text="@string/quick_actions"
+                android:textAppearance="@style/TextAppearance.FitTrack.Section" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:baselineAligned="false">
+
+                <LinearLayout
+                    android:id="@+id/quickLogBtn"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="@dimen/space_sm"
+                    android:orientation="vertical"
+                    android:padding="@dimen/space_lg"
+                    android:background="@drawable/bg_card_clickable"
+                    android:focusable="true"
+                    android:clickable="true">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:padding="10dp"
+                        android:background="@drawable/bg_icon_circle"
+                        android:src="@drawable/ic_nav_log"
+                        app:tint="@color/brand_bright"
+                        android:importantForAccessibility="no" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_md"
+                        android:text="@string/quick_log_title"
+                        android:textAppearance="@style/TextAppearance.FitTrack.Section" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="@string/quick_log_subtitle"
+                        android:textAppearance="@style/TextAppearance.FitTrack.Caption" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/quickChartsBtn"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="@dimen/space_sm"
+                    android:orientation="vertical"
+                    android:padding="@dimen/space_lg"
+                    android:background="@drawable/bg_card_clickable"
+                    android:focusable="true"
+                    android:clickable="true">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:padding="10dp"
+                        android:background="@drawable/bg_icon_circle"
+                        android:src="@drawable/ic_nav_charts"
+                        app:tint="@color/brand_bright"
+                        android:importantForAccessibility="no" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_md"
+                        android:text="@string/quick_charts_title"
+                        android:textAppearance="@style/TextAppearance.FitTrack.Section" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="@string/quick_charts_subtitle"
+                        android:textAppearance="@style/TextAppearance.FitTrack.Caption" />
+                </LinearLayout>
+
+            </LinearLayout>
+
         </LinearLayout>
-    </FrameLayout>
-
-    <TextView
-        android:id="@+id/onTrackPill"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ON TRACK FOR TODAY"
-        android:textSize="12sp"
-        android:textStyle="bold"
-        android:textColor="@color/accent_green"
-        android:background="@drawable/bg_pill"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="8dp"
-        android:layout_marginTop="20dp"
-        app:layout_constraintTop_toBottomOf="@id/ringContainer"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+    </ScrollView>
 
     <include
         android:id="@+id/bottomNav"
         layout="@layout/bottom_nav"
         android:layout_width="match_parent"
-        android:layout_height="64dp"
+        android:layout_height="@dimen/bottom_nav_height"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />

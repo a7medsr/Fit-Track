@@ -1,91 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="12dp"
-    app:cardCornerRadius="16dp"
-    app:cardElevation="2dp"
-    app:cardBackgroundColor="@android:color/white">
+    android:layout_marginTop="@dimen/space_md"
+    android:orientation="vertical"
+    android:background="@drawable/bg_card_clickable"
+    android:padding="@dimen/space_lg"
+    android:focusable="true"
+    android:clickable="true"
+    android:contentDescription="@string/cd_expand_day">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:orientation="horizontal"
+        android:baselineAligned="false"
+        android:gravity="center_vertical">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/dayName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Monday"
-                    android:textSize="17sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/text_primary" />
-
-                <TextView
-                    android:id="@+id/dayDate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="2026-08-24"
-                    android:textSize="12sp"
-                    android:textColor="@color/text_secondary" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="end">
-
-                <TextView
-                    android:id="@+id/dayCalories"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="450 kcal"
-                    android:textSize="19sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/accent_green" />
-
-                <TextView
-                    android:id="@+id/dayActivityCount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="2 activities"
-                    android:textSize="12sp"
-                    android:textColor="@color/text_secondary" />
-            </LinearLayout>
+            android:layout_weight="1"
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/expandArrow"
+                android:id="@+id/dayName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="⌄"
-                android:textSize="20sp"
-                android:textColor="@color/accent_blue"
-                android:layout_marginStart="12dp" />
+                android:text="@string/day_placeholder"
+                android:textAppearance="@style/TextAppearance.FitTrack.Section"
+                android:textSize="17sp" />
 
+            <TextView
+                android:id="@+id/dayDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:text="@string/date_placeholder"
+                android:textAppearance="@style/TextAppearance.FitTrack.Caption"
+                android:textSize="12sp" />
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/detailsContainer"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:visibility="gone"
-            android:layout_marginTop="12dp" />
+            android:gravity="end">
+
+            <TextView
+                android:id="@+id/dayCalories"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/day_calories_placeholder"
+                android:textAppearance="@style/TextAppearance.FitTrack.Metric"
+                android:textSize="19sp"
+                android:textColor="@color/brand_bright" />
+
+            <TextView
+                android:id="@+id/dayActivityCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="@string/day_count_placeholder"
+                android:textAppearance="@style/TextAppearance.FitTrack.Caption"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/expandArrow"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_marginStart="@dimen/space_md"
+            android:src="@drawable/ic_chevron_down"
+            android:importantForAccessibility="no" />
 
     </LinearLayout>
-</androidx.cardview.widget.CardView>
+
+    <LinearLayout
+        android:id="@+id/detailsContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:layout_marginTop="@dimen/space_sm" />
+
+</LinearLayout>

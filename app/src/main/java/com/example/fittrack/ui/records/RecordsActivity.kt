@@ -1,6 +1,7 @@
 package com.example.fittrack.ui.records
 
 import android.os.Bundle
+import android.view.View
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -23,7 +24,8 @@ class RecordsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_records)
 
-        findViewById<TextView>(R.id.backButton).setOnClickListener { finish() }
+        findViewById<TextView>(R.id.screenTitle).setText(R.string.records_title)
+        findViewById<View>(R.id.backButton).setOnClickListener { finish() }
         NavBarHelper.setup(this, NavTab.RECORDS)
 
         val bestDayValue = findViewById<TextView>(R.id.bestDayValue)

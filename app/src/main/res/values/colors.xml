@@ -1,12 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!--
+      FitTrack dark palette.
+      The app is dark-only, so these tokens are the single source of truth and
+      values-night simply inherits the same theme.
+    -->
+
+    <!-- Base neutrals -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="accent_blue">#2F6FED</color>
-    <color name="accent_green">#34C759</color>
-    <color name="bg_screen">#F4F6FA</color>
-    <color name="ring_track">#EAEDF2</color>
-    <color name="text_primary">#1A1A1A</color>
-    <color name="text_secondary">#8A8F98</color>
-    <color name="pill_bg">#E3F8E9</color>
+
+    <!-- Surfaces -->
+    <color name="bg_base">#0A0F0D</color>
+    <color name="surface">#121917</color>
+    <color name="surface_variant">#18211E</color>
+    <color name="outline">#24302C</color>
+    <color name="outline_strong">#2F3D38</color>
+
+    <!-- Brand green -->
+    <color name="brand">#22C55E</color>
+    <color name="brand_bright">#4ADE80</color>
+    <color name="brand_dim">#16A34A</color>
+    <color name="brand_deep">#0F7A38</color>
+    <color name="brand_tint">#12291D</color>
+    <color name="brand_ripple">#3322C55E</color>
+
+    <!-- Content on top of a green fill -->
+    <color name="on_brand">#052012</color>
+
+    <!-- Text -->
+    <color name="text_primary">#E8EFEA</color>
+    <color name="text_secondary">#93A29B</color>
+    <color name="text_tertiary">#64736D</color>
+
+    <!-- Feedback -->
+    <color name="danger">#F2555A</color>
+    <color name="danger_tint">#2A1416</color>
+
+    <!-- Component specific -->
+    <color name="ring_track">#1C2724</color>
+    <color name="chart_grid">#1E2926</color>
+    <color name="nav_bar_bg">#0E1412</color>
+
 </resources>
