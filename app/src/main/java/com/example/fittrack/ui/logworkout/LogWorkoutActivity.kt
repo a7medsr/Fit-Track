@@ -82,17 +82,18 @@ class LogWorkoutActivity : AppCompatActivity() {
 
             refresh()
             container.addView(card)
-            val autoWalkCard = layoutInflater.inflate(R.layout.item_auto_walking, container, false)
-            container.addView(autoWalkCard)
-            val autoWalkSteps = autoWalkCard.findViewById<TextView>(R.id.autoWalkSteps)
-            val autoWalkCalories = autoWalkCard.findViewById<TextView>(R.id.autoWalkCalories)
+        }
 
-            lifecycleScope.launch {
-                repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    viewModel.todaySteps.collect { steps ->
-                        autoWalkSteps.text = "$steps steps today"
-                        autoWalkCalories.text = "≈ ${viewModel.caloriesFromSteps(steps)} kcal"
-                    }
+        val autoWalkCard = layoutInflater.inflate(R.layout.item_auto_walking, container, false)
+        container.addView(autoWalkCard)
+        val autoWalkSteps = autoWalkCard.findViewById<TextView>(R.id.autoWalkSteps)
+        val autoWalkCalories = autoWalkCard.findViewById<TextView>(R.id.autoWalkCalories)
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.todaySteps.collect { steps ->
+                    autoWalkSteps.text = "$steps steps today"
+                    autoWalkCalories.text = "≈ ${viewModel.caloriesFromSteps(steps)} kcal"
                 }
             }
         }
@@ -112,7 +113,7 @@ class LogWorkoutActivity : AppCompatActivity() {
                             .map { (type, list) -> "$type ×${list.size}" }
                             .joinToString(" · ") + " · Walking"
                     }
-                    for (i in 0 until container.childCount) {
+                    for (i in activities.indices) {
                         val card = container.getChildAt(i)
                         val type = activities[i].first
                         val count = workouts.count { it.type == type }
