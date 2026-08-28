@@ -2,6 +2,7 @@ package com.example.fittrack.di
 
 import com.example.fittrack.BuildConfig
 import com.example.fittrack.data.remote.AiProvider
+import com.example.fittrack.data.remote.AvatarApi
 import com.example.fittrack.data.remote.OpenAiCompatibleApi
 import com.example.fittrack.data.remote.OpenAiCompatibleProvider
 import dagger.Module
@@ -35,6 +36,17 @@ object NetworkModule {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(OpenAiCompatibleApi::class.java)
+
+    /** Talks to the FitTrack service on the VPS, not to a model vendor. */
+    @Provides
+    @Singleton
+    fun provideAvatarApi(client: OkHttpClient): AvatarApi =
+        Retrofit.Builder()
+            .baseUrl(BuildConfig.VPS_BASE_URL)
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(AvatarApi::class.java)
 
     /**
      * Gemini by default: it has a genuine free tier and no card requirement.

@@ -189,11 +189,34 @@
                 android:focusable="true"
                 android:clickable="true">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/account_icon"
-                    android:textSize="18sp" />
+                <!-- Tapping either the picture or the placeholder opens the
+                     photo picker; the ImageView sits on top once one is set. -->
+                <FrameLayout
+                    android:id="@+id/avatarContainer"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:focusable="true"
+                    android:clickable="true">
+
+                    <TextView
+                        android:id="@+id/avatarPlaceholder"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:background="@drawable/bg_icon_circle"
+                        android:text="@string/account_icon"
+                        android:textSize="18sp" />
+
+                    <ImageView
+                        android:id="@+id/avatarImage"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:visibility="gone"
+                        android:contentDescription="@string/cd_profile_picture" />
+
+                </FrameLayout>
 
                 <TextView
                     android:id="@+id/accountLabel"

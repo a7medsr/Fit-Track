@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Release default: HTTPS only. Plain HTTP is refused, which is what we want the
+  shipped app to do. The debug build overrides this file to allow cleartext to
+  the VPS while the certificate is still being set up.
+-->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="false" />
+</network-security-config>

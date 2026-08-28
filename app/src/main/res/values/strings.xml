@@ -22,6 +22,11 @@
     <string name="auth_sign_out">Sign out</string>
     <string name="auth_signed_out">Not signed in · data stays on this device</string>
     <string name="account_icon">👤</string>
+    <string name="cd_profile_picture">Profile picture. Tap to change it.</string>
+    <string name="avatar_updated">Profile picture updated.</string>
+    <string name="avatar_local_only">Saved on this device. Sign in to back it up.</string>
+    <string name="avatar_upload_failed">Saved on this device, but the upload failed.</string>
+    <string name="avatar_failed">%1$s</string>
     <string name="auth_sign_out_confirm">Sign out of FitTrack? Your data stays in your account.</string>
     <string name="auth_syncing">Syncing…</string>
     <string name="auth_synced">Synced</string>

@@ -62,6 +62,12 @@ class AuthRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun currentIdToken(): String? = try {
+        firebaseAuth.currentUser?.getIdToken(false)?.await()?.token
+    } catch (e: Exception) {
+        null
+    }
+
     override fun signOut() {
         firebaseAuth.signOut()
     }

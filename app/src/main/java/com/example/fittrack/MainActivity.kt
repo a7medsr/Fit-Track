@@ -16,7 +16,14 @@ import com.example.fittrack.ui.charts.ChartsActivity
 import com.example.fittrack.ui.common.UiState
 import com.example.fittrack.ui.dashboard.DashboardViewModel
 import com.example.fittrack.ui.auth.SignInActivity
+import android.graphics.BitmapFactory
+import android.graphics.Outline
+import android.view.ViewOutlineProvider
+import android.widget.ImageView
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import com.example.fittrack.ui.chat.ChatActivity
+import com.example.fittrack.ui.dashboard.AvatarMessage
 import com.example.fittrack.ui.logworkout.LogWorkoutActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -25,6 +32,14 @@ import kotlinx.coroutines.launch
 class MainActivity : AppCompatActivity() {
 
     private val viewModel: DashboardViewModel by viewModels()
+
+    /**
+     * The photo picker needs no storage permission on any supported version --
+     * the system UI hands back a single grant for the one image chosen.
+     */
+    private val pickImage = registerForActivityResult(
+        ActivityResultContracts.PickVisualMedia()
+    ) { uri -> uri?.let { viewModel.pickedAvatar(it) } }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -118,6 +133,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        setUpAvatar()
+
         com.example.fittrack.ui.common.NavBarHelper.setup(this, com.example.fittrack.ui.common.NavTab.HOME)
 
         lifecycleScope.launch {
@@ -131,6 +148,61 @@ class MainActivity : AppCompatActivity() {
                         }
                         is UiState.Error -> stepCountBig.text = "Error"
                         else -> Unit
+                    }
+                }
+            }
+        }
+    }
+
+    private fun setUpAvatar() {
+        val avatarImage = findViewById<ImageView>(R.id.avatarImage)
+        val placeholder = findViewById<View>(R.id.avatarPlaceholder)
+
+        // Round the photo by clipping to an oval outline, rather than pulling in
+        // an image library just for one circular avatar.
+        avatarImage.outlineProvider = object : ViewOutlineProvider() {
+            override fun getOutline(view: View, outline: Outline) {
+                outline.setOval(0, 0, view.width, view.height)
+            }
+        }
+        avatarImage.clipToOutline = true
+
+        findViewById<View>(R.id.avatarContainer).setOnClickListener {
+            pickImage.launch(
+                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+            )
+        }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    viewModel.avatar.collect { avatar ->
+                        val bitmap = avatar?.let {
+                            runCatching { BitmapFactory.decodeFile(it.file.absolutePath) }
+                                .getOrNull()
+                        }
+                        if (bitmap == null) {
+                            avatarImage.visibility = View.GONE
+                            placeholder.visibility = View.VISIBLE
+                        } else {
+                            avatarImage.setImageBitmap(bitmap)
+                            avatarImage.visibility = View.VISIBLE
+                            placeholder.visibility = View.GONE
+                        }
+                    }
+                }
+                launch {
+                    viewModel.avatarMessage.collect { message ->
+                        val text = when (message) {
+                            is AvatarMessage.Uploaded -> getString(R.string.avatar_updated)
+                            is AvatarMessage.LocalOnly -> getString(R.string.avatar_local_only)
+                            is AvatarMessage.UploadFailed ->
+                                getString(R.string.avatar_upload_failed)
+                            is AvatarMessage.Failed -> message.message
+                        }
+                        android.widget.Toast
+                            .makeText(this@MainActivity, text, android.widget.Toast.LENGTH_SHORT)
+                            .show()
                     }
                 }
             }

@@ -15,5 +15,11 @@ interface AuthRepository {
     suspend fun signInWithEmail(email: String, password: String): AuthOutcome
     suspend fun signInWithGoogle(idToken: String): AuthOutcome
     suspend fun sendPasswordReset(email: String): AuthOutcome
+    /**
+     * Short-lived Firebase ID token, for the VPS to verify server-side. Null
+     * when signed out.
+     */
+    suspend fun currentIdToken(): String?
+
     fun signOut()
 }
