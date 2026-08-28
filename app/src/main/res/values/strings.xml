@@ -1,6 +1,31 @@
 <resources>
     <string name="app_name">FitTrack</string>
 
+    <!-- Auth -->
+    <string name="auth_title_sign_in">Welcome back</string>
+    <string name="auth_title_sign_up">Create your account</string>
+    <string name="auth_subtitle_sign_in">Sign in to sync your workouts across devices.</string>
+    <string name="auth_subtitle_sign_up">Your workouts stay on this device and back up to your account.</string>
+    <string name="auth_email_hint">Email</string>
+    <string name="auth_password_hint">Password</string>
+    <string name="auth_action_sign_in">Sign in</string>
+    <string name="auth_action_sign_up">Create account</string>
+    <string name="auth_action_google">Continue with Google</string>
+    <string name="auth_forgot_password">Forgot your password?</string>
+    <string name="auth_or">or</string>
+    <string name="auth_skip">Continue without an account</string>
+    <string name="auth_sign_in_short">Sign in</string>
+    <string name="auth_toggle_to_sign_up">New here? Create an account</string>
+    <string name="auth_toggle_to_sign_in">Already have an account? Sign in</string>
+    <string name="auth_sync_warning">Signed in, but sync failed: %1$s</string>
+    <string name="auth_signed_in_as">Signed in as %1$s</string>
+    <string name="auth_sign_out">Sign out</string>
+    <string name="auth_signed_out">Not signed in · data stays on this device</string>
+    <string name="account_icon">👤</string>
+    <string name="auth_sign_out_confirm">Sign out of FitTrack? Your data stays in your account.</string>
+    <string name="auth_syncing">Syncing…</string>
+    <string name="auth_synced">Synced</string>
+
     <!-- Navigation -->
     <string name="nav_home">Home</string>
     <string name="nav_history">History</string>
@@ -57,6 +82,91 @@
     <string name="calories_estimate_placeholder">\u2248 330 kcal</string>
     <string name="activity_placeholder">Running</string>
 
+    <string name="calories_value">%1$d kcal</string>
+    <string name="calories_estimate">≈ %1$d kcal</string>
+    <string name="duration_value">%1$d min</string>
+    <string name="steps_today">%1$d steps today</string>
+    <string name="summary_walking_only">Walking only · %1$d kcal</string>
+    <string name="logged_today_count">✓ %1$d today</string>
+    <string name="activity_logged">%1$s logged!</string>
+    <string name="choose_exercise">Choose an exercise</string>
+    <string name="choose_exercise_hint">Pick one from the library to log it</string>
+    <string name="exercise_placeholder_icon">➕</string>
+    <string name="cd_choose_exercise">Open the exercise library</string>
+
+    <!-- Body weight -->
+    <string name="weight_icon">⚖️</string>
+    <string name="weight_row_label">Body weight</string>
+    <string name="weight_placeholder">70 kg</string>
+    <string name="weight_value">%1$d kg</string>
+    <string name="weight_dialog_title">Body weight</string>
+    <string name="weight_dialog_subtitle">Calories are worked out from your weight and the exercise\'s MET value.</string>
+    <string name="weight_hint">70</string>
+    <string name="weight_save">Save weight</string>
+    <string name="cd_edit_weight">Edit your body weight</string>
+    <string name="cd_decrease_weight">Decrease weight by 1 kg</string>
+    <string name="cd_increase_weight">Increase weight by 1 kg</string>
+
+    <!-- Exercise library -->
+    <string name="exercise_picker_title">Exercise library</string>
+    <string name="exercise_search_hint">Search exercises</string>
+    <string name="exercise_meta_placeholder">Cardio · 9.8 MET</string>
+    <string name="exercise_meta">%1$s · %2$s MET · ≈ %3$d kcal/h</string>
+    <string name="exercise_category_all">All</string>
+    <string name="exercise_loading">Loading exercises…</string>
+    <string name="exercise_empty_title">No matches</string>
+    <string name="exercise_empty_body">Try another search, or tap + to create your own exercise.</string>
+    <string name="exercise_error_title">Couldn\'t load exercises</string>
+    <string name="cd_add_custom_exercise">Create a custom exercise</string>
+    <string name="cd_edit_exercise">Edit this exercise</string>
+    <string name="cd_toggle_favorite">Add or remove from favourites</string>
+
+    <!-- Custom exercise dialog -->
+    <string name="custom_exercise_title">New exercise</string>
+    <string name="custom_exercise_title_edit">Edit exercise</string>
+    <string name="custom_exercise_subtitle">Give it a name, a category and how hard it feels.</string>
+    <string name="custom_exercise_name_label">Emoji and name</string>
+    <string name="custom_exercise_name_hint">e.g. Climbing gym</string>
+    <string name="custom_exercise_default_icon">💪</string>
+    <string name="custom_exercise_category_label">Category</string>
+    <string name="custom_exercise_intensity_label">Intensity</string>
+    <string name="custom_exercise_intensity_hint">Light ≈ 3 MET, Moderate ≈ 6 MET, Intense ≈ 9 MET.</string>
+    <string name="custom_exercise_save">Save</string>
+    <string name="custom_exercise_delete">Delete exercise</string>
+    <string name="custom_exercise_name_required">Give the exercise a name first.</string>
+    <string name="cd_exercise_emoji">Exercise emoji</string>
+
+    <!-- Gym sessions -->
+    <string name="section_sessions">Gym sessions</string>
+    <string name="section_sessions_hint">Build a session once, then log every exercise in one tap.</string>
+    <string name="sessions_empty_body">No sessions yet. Create Push, Pull or Leg day and log the whole thing at once.</string>
+    <string name="session_new">+ New session</string>
+    <string name="routine_default_icon">🏋️</string>
+    <string name="routine_name_placeholder">Push Day</string>
+    <string name="routine_meta_placeholder">5 exercises · 60 min · ≈ 620 kcal</string>
+    <string name="routine_meta">%1$s · %2$d min · ≈ %3$d kcal</string>
+    <string name="routine_log_now">Log</string>
+    <string name="routine_logged">%1$s logged · %2$s</string>
+    <string name="routine_logged_today">✓ Logged today</string>
+    <string name="cd_log_session">Log this whole session now</string>
+
+    <!-- Session editor -->
+    <string name="routine_title_new">New session</string>
+    <string name="routine_title_edit">Edit session</string>
+    <string name="routine_name_label">Emoji and name</string>
+    <string name="routine_name_hint">e.g. Push Day</string>
+    <string name="routine_exercises_label">Exercises in this session</string>
+    <string name="routine_empty_body">Nothing here yet. Add exercises from the library and set how long you spend on each.</string>
+    <string name="routine_add_exercise">+ Add exercise</string>
+    <string name="routine_save">Save session</string>
+    <string name="routine_delete">Delete session</string>
+    <string name="routine_incomplete">Give the session a name and at least one exercise.</string>
+    <string name="routine_item_meta">%1$s MET · ≈ %2$d kcal</string>
+    <string name="cd_session_emoji">Session emoji</string>
+    <string name="cd_remove_exercise">Remove this exercise from the session</string>
+    <string name="cd_move_up">Move earlier in the session</string>
+    <string name="cd_move_down">Move later in the session</string>
+
     <!-- Auto-tracked walking -->
     <string name="walking">Walking</string>
     <string name="walking_icon">🚶</string>
@@ -81,10 +191,49 @@
 
     <!-- Records -->
     <string name="records_title">Records</string>
-    <string name="hall_of_fame">Hall of fame</string>
-    <string name="hall_of_fame_subtitle">Your personal bests so far.</string>
-    <string name="best_step_day">Best step day</string>
+    <!-- Still used by the Charts screen's week summary. -->
     <string name="best_week">Best week</string>
+    <string name="hall_of_fame">Hall of fame</string>
+    <string name="hall_of_fame_subtitle">Every best you have set so far.</string>
+    <string name="records_total_burned">Total burned, all time</string>
+    <string name="records_total_caption">%1$d workouts · %2$s min · %3$s steps</string>
+    <string name="records_consistency">Consistency</string>
+    <string name="records_personal_bests">Personal bests</string>
+    <string name="records_lifetime">Lifetime</string>
+    <string name="records_go_to">Your go-to exercises</string>
+    <string name="records_empty_title">No records yet</string>
+    <string name="records_empty_body">Log a workout or take some steps, and your bests will start showing up here.</string>
+    <string name="records_error_title">Records unavailable</string>
+
+    <string name="record_best_step_day">Best step day</string>
+    <string name="record_best_calorie_day">Biggest calorie day</string>
+    <string name="record_best_week">Best 7-day stretch</string>
+    <string name="record_longest_workout">Longest workout</string>
+    <string name="record_hardest_workout">Hardest workout</string>
+    <string name="record_current_streak">Current streak</string>
+    <string name="record_longest_streak">Longest streak</string>
+    <string name="record_active_days">Active days</string>
+    <string name="record_total_time">Total active time</string>
+    <string name="record_total_workouts">Workouts logged</string>
+    <string name="record_total_steps">Steps taken</string>
+    <string name="record_training_since">Training since</string>
+    <string name="record_busiest_day">Busiest day</string>
+
+    <string name="records_steps_value">%s steps</string>
+    <string name="records_kcal_value">%s kcal</string>
+    <string name="records_minutes_value">%s min</string>
+    <string name="records_day_count">%d days</string>
+    <string name="records_across_workouts">across %d workouts</string>
+    <string name="records_across_days">across %d active days</string>
+    <string name="records_days_ago">%d days ago</string>
+    <string name="records_workouts_value">%d logged</string>
+    <string name="records_week_range">%1$s – %2$s</string>
+    <string name="records_hours_minutes">%1$dh %2$dm</string>
+    <string name="records_tally_caption">%1$d × · %2$s min total</string>
+    <string name="records_busiest_caption">%1$d workouts on a %2$s</string>
+    <string name="records_workout_caption">%1$s · %2$s</string>
+    <string name="records_streak_unit">day</string>
+    <string name="records_streak_unit_plural">days</string>
     <string name="em_dash">\u2014</string>
 
     <!-- Charts -->
@@ -96,4 +245,10 @@
     <string name="four_week_trend">4-week trend</string>
     <string name="current_streak">Current streak</string>
     <string name="streak_placeholder">0 days</string>
+
+    <plurals name="exercise_count">
+        <item quantity="one">%d exercise</item>
+        <item quantity="other">%d exercises</item>
+    </plurals>
+
 </resources>

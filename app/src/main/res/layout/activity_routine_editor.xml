@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_base"
+    android:fitsSystemWindows="true">
+
+    <include
+        android:id="@+id/appBar"
+        layout="@layout/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/app_bar_height"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:scrollbars="none"
+        app:layout_constraintTop_toBottomOf="@id/appBar"
+        app:layout_constraintBottom_toTopOf="@id/bottomNav">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/screen_margin"
+            android:paddingBottom="@dimen/content_bottom_padding">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_md"
+                android:text="@string/routine_name_label"
+                android:textAppearance="@style/TextAppearance.FitTrack.Overline" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_sm"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/routineIconInput"
+                    style="@style/Widget.FitTrack.Input"
+                    android:layout_width="64dp"
+                    android:layout_height="@dimen/button_height"
+                    android:gravity="center"
+                    android:padding="0dp"
+                    android:text="@string/routine_default_icon"
+                    android:maxLength="4"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:inputType="text"
+                    android:textSize="22sp"
+                    android:importantForAutofill="no"
+                    android:contentDescription="@string/cd_session_emoji" />
+
+                <EditText
+                    android:id="@+id/routineNameInput"
+                    style="@style/Widget.FitTrack.Input"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="@dimen/button_height"
+                    android:layout_marginStart="@dimen/space_sm"
+                    android:paddingHorizontal="@dimen/space_lg"
+                    android:paddingVertical="0dp"
+                    android:gravity="center_vertical"
+                    android:hint="@string/routine_name_hint"
+                    android:inputType="textCapWords"
+                    android:maxLength="40"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textSize="15sp"
+                    android:importantForAutofill="no" />
+
+            </LinearLayout>
+
+            <!-- Session totals, mirroring the hero card on the Log screen. -->
+            <LinearLayout
+                android:id="@+id/summaryCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_lg"
+                android:orientation="horizontal"
+                android:background="@drawable/bg_card_accent"
+                android:padding="@dimen/space_lg"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/summaryExercises"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/em_dash"
+                    android:textAppearance="@style/TextAppearance.FitTrack.Section"
+                    android:textSize="15sp"
+                    android:textColor="@color/brand_bright" />
+
+                <TextView
+                    android:id="@+id/summaryMinutes"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/em_dash"
+                    android:textAppearance="@style/TextAppearance.FitTrack.Section"
+                    android:textSize="15sp"
+                    android:textColor="@color/brand_bright" />
+
+                <TextView
+                    android:id="@+id/summaryCalories"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/em_dash"
+                    android:textAppearance="@style/TextAppearance.FitTrack.Section"
+                    android:textSize="15sp"
+                    android:textColor="@color/brand_bright" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_xl"
+                android:text="@string/routine_exercises_label"
+                android:textAppearance="@style/TextAppearance.FitTrack.Section" />
+
+            <TextView
+                android:id="@+id/routineEmptyHint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_md"
+                android:gravity="center"
+                android:background="@drawable/bg_card"
+                android:padding="@dimen/space_xl"
+                android:text="@string/routine_empty_body"
+                android:textAppearance="@style/TextAppearance.FitTrack.Caption" />
+
+            <LinearLayout
+                android:id="@+id/routineItemsContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+            <TextView
+                android:id="@+id/addExerciseBtn"
+                style="@style/Widget.FitTrack.Button.Secondary"
+                android:layout_marginTop="@dimen/space_md"
+                android:text="@string/routine_add_exercise" />
+
+            <TextView
+                android:id="@+id/saveRoutineBtn"
+                style="@style/Widget.FitTrack.Button.Primary"
+                android:layout_marginTop="@dimen/space_xl"
+                android:text="@string/routine_save" />
+
+            <TextView
+                android:id="@+id/deleteRoutineBtn"
+                style="@style/Widget.FitTrack.Button.Secondary"
+                android:layout_marginTop="@dimen/space_md"
+                android:text="@string/routine_delete"
+                android:textColor="@color/danger"
+                android:visibility="gone" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <include
+        android:id="@+id/bottomNav"
+        layout="@layout/bottom_nav"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/bottom_nav_height"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

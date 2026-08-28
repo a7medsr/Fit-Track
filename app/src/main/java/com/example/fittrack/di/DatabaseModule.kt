@@ -3,6 +3,9 @@ package com.example.fittrack.di
 import android.content.Context
 import androidx.room.Room
 import com.example.fittrack.data.local.AppDatabase
+import com.example.fittrack.data.local.ExerciseDao
+import com.example.fittrack.data.local.Migrations
+import com.example.fittrack.data.local.RoutineDao
 import com.example.fittrack.data.local.StepDao
 import com.example.fittrack.data.local.WorkoutDao
 import dagger.Module
@@ -24,7 +27,9 @@ object DatabaseModule {
             AppDatabase::class.java,
             "fittrack_database"
         )
-            .fallbackToDestructiveMigration()
+            // Explicit migrations, not fallbackToDestructiveMigration: an upgrade
+            // must never throw away logged workouts or step history.
+            .addMigrations(*Migrations.ALL)
             .build()
     }
 
@@ -35,5 +40,13 @@ object DatabaseModule {
     @Provides
     fun provideWorkoutDao(database: AppDatabase): WorkoutDao {
         return database.workoutDao()
+    }
+    @Provides
+    fun provideExerciseDao(database: AppDatabase): ExerciseDao {
+        return database.exerciseDao()
+    }
+    @Provides
+    fun provideRoutineDao(database: AppDatabase): RoutineDao {
+        return database.routineDao()
     }
 }

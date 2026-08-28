@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/space_sm"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:background="@drawable/bg_card_clickable"
+    android:paddingHorizontal="@dimen/space_md"
+    android:paddingVertical="@dimen/space_md"
+    android:focusable="true"
+    android:clickable="true">
+
+    <TextView
+        android:id="@+id/exerciseIcon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:background="@drawable/bg_icon_circle"
+        android:textSize="20sp"
+        android:text="@string/em_dash" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:layout_marginStart="@dimen/space_md">
+
+        <TextView
+            android:id="@+id/exerciseName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/activity_placeholder"
+            android:textAppearance="@style/TextAppearance.FitTrack.Section"
+            android:textSize="15sp"
+            android:maxLines="1"
+            android:ellipsize="end" />
+
+        <TextView
+            android:id="@+id/exerciseMeta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:text="@string/exercise_meta_placeholder"
+            android:textAppearance="@style/TextAppearance.FitTrack.Caption"
+            android:textSize="12sp"
+            android:maxLines="1"
+            android:ellipsize="end" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/editCustomBtn"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:padding="8dp"
+        android:src="@drawable/ic_edit"
+        android:background="@drawable/bg_icon_button_ghost"
+        android:contentDescription="@string/cd_edit_exercise"
+        android:visibility="gone"
+        android:focusable="true"
+        android:clickable="true" />
+
+    <ImageView
+        android:id="@+id/favoriteBtn"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="@dimen/space_xs"
+        android:padding="7dp"
+        android:src="@drawable/ic_star_outline"
+        android:background="@drawable/bg_icon_button_ghost"
+        android:contentDescription="@string/cd_toggle_favorite"
+        android:focusable="true"
+        android:clickable="true" />
+
+</LinearLayout>

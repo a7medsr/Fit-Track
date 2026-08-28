@@ -6,6 +6,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.example.fittrack.MainActivity
 import com.example.fittrack.R
 import com.example.fittrack.ui.charts.ChartsActivity
 import com.example.fittrack.ui.records.RecordsActivity
@@ -55,24 +56,14 @@ object NavBarHelper {
             )
         )
 
-        tabs[NavTab.CHARTS]?.container?.setOnClickListener {
-            if (current != NavTab.CHARTS) activity.startActivity(Intent(activity, ChartsActivity::class.java))
-        }
-        tabs[NavTab.RECORDS]?.container?.setOnClickListener {
-            if (current != NavTab.RECORDS) activity.startActivity(Intent(activity, RecordsActivity::class.java))
-        }
-        tabs[NavTab.HOME]?.container?.setOnClickListener {
-            if (current != NavTab.HOME) activity.finish()
-        }
-        tabs[NavTab.LOG]?.container?.setOnClickListener {
-            if (current != NavTab.LOG) activity.startActivity(Intent(activity, LogWorkoutActivity::class.java))
-        }
-        tabs[NavTab.HISTORY]?.container?.setOnClickListener {
-            if (current != NavTab.HISTORY) activity.startActivity(Intent(activity, HistoryActivity::class.java))
+        tabs.forEach { (tab, views) ->
+            views.container.setOnClickListener { navigateTo(activity, tab) }
         }
 
-        // Applied after the listeners, because setOnClickListener turns clickable
-        // back on and the current tab should not show a ripple.
+        // Applied after the listeners so the tint is not overwritten. Every tab
+        // stays clickable, including the current one: sub-screens such as the
+        // exercise picker mark their parent tab as current, and tapping it has
+        // to be the way back to that parent.
         val selected = ContextCompat.getColor(activity, R.color.brand_bright)
         val unselected = ContextCompat.getColor(activity, R.color.text_tertiary)
         tabs.forEach { (tab, views) ->
@@ -81,7 +72,29 @@ object NavBarHelper {
             if (views.tintIcon) views.icon.setColorFilter(tint)
             views.label.setTextColor(tint)
             views.container.isSelected = isCurrent
-            views.container.isClickable = !isCurrent
         }
     }
+
+    /**
+     * CLEAR_TOP pops everything stacked above the destination and SINGLE_TOP
+     * reuses the instance already sitting there, so one tap always lands on the
+     * tab -- and browsing between tabs cannot pile up an ever deeper back stack.
+     */
+    private fun navigateTo(activity: AppCompatActivity, tab: NavTab) {
+        val target = destinations[tab] ?: return
+        if (activity.javaClass == target) return
+        activity.startActivity(
+            Intent(activity, target).addFlags(
+                Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            )
+        )
+    }
+
+    private val destinations = mapOf<NavTab, Class<*>>(
+        NavTab.HOME to MainActivity::class.java,
+        NavTab.HISTORY to HistoryActivity::class.java,
+        NavTab.LOG to LogWorkoutActivity::class.java,
+        NavTab.CHARTS to ChartsActivity::class.java,
+        NavTab.RECORDS to RecordsActivity::class.java
+    )
 }

@@ -22,7 +22,9 @@ class WorkoutRepositoryImpl @Inject constructor(
                     durationMinutes = entity.durationMinutes,
                     calories = entity.calories,
                     date = entity.date,
-                    notes = entity.notes
+                    notes = entity.notes,
+                    exerciseIcon = entity.exerciseIcon,
+                    sessionName = entity.sessionName
                 )
             }
         }
@@ -35,8 +37,26 @@ class WorkoutRepositoryImpl @Inject constructor(
                 durationMinutes = workout.durationMinutes,
                 calories = workout.calories,
                 date = workout.date,
-                notes = workout.notes
+                notes = workout.notes,
+                exerciseIcon = workout.exerciseIcon,
+                sessionName = workout.sessionName
             )
+        )
+    }
+
+    override suspend fun addWorkouts(workouts: List<Workout>) {
+        workoutDao.insertAll(
+            workouts.map { workout ->
+                WorkoutEntity(
+                    type = workout.type,
+                    durationMinutes = workout.durationMinutes,
+                    calories = workout.calories,
+                    date = workout.date,
+                    notes = workout.notes,
+                    exerciseIcon = workout.exerciseIcon,
+                    sessionName = workout.sessionName
+                )
+            }
         )
     }
 
@@ -48,7 +68,9 @@ class WorkoutRepositoryImpl @Inject constructor(
                 durationMinutes = workout.durationMinutes,
                 calories = workout.calories,
                 date = workout.date,
-                notes = workout.notes
+                notes = workout.notes,
+                exerciseIcon = workout.exerciseIcon,
+                sessionName = workout.sessionName
             )
         )
     }
@@ -61,7 +83,9 @@ class WorkoutRepositoryImpl @Inject constructor(
                 durationMinutes = workout.durationMinutes,
                 calories = workout.calories,
                 date = workout.date,
-                notes = workout.notes
+                notes = workout.notes,
+                exerciseIcon = workout.exerciseIcon,
+                sessionName = workout.sessionName
             )
         )
     }

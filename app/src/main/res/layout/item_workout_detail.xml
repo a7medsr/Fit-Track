@@ -53,6 +53,20 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/detailSession"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_sm"
+        android:textSize="11sp"
+        android:fontFamily="sans-serif-medium"
+        android:textColor="@color/brand_bright"
+        android:background="@drawable/bg_pill"
+        android:paddingHorizontal="@dimen/space_md"
+        android:paddingVertical="4dp"
+        android:visibility="gone"
+        android:text="@string/routine_name_placeholder" />
+
+    <TextView
         android:id="@+id/detailNotes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

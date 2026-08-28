@@ -11,6 +11,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.fittrack.R
+import com.example.fittrack.domain.model.Workout
 import com.example.fittrack.ui.common.NavBarHelper
 import com.example.fittrack.ui.common.NavTab
 import com.example.fittrack.ui.common.UiState
@@ -23,7 +24,11 @@ class HistoryActivity : AppCompatActivity() {
     private val viewModel: HistoryViewModel by viewModels()
     private val expandedDays = mutableSetOf<String>()
 
-    private fun iconFor(type: String) = when (type) {
+    /**
+     * Workouts logged from the exercise library carry their own emoji. Rows
+     * written before that existed fall back to the original four names.
+     */
+    private fun iconFor(workout: Workout): String = workout.exerciseIcon ?: when (workout.type) {
         "Running" -> "🏃"
         "Cycling" -> "🚴"
         "Gym" -> "🏋️"
@@ -76,10 +81,18 @@ class HistoryActivity : AppCompatActivity() {
                                     details.removeAllViews()
                                     day.workouts.forEach { workout ->
                                         val row = layoutInflater.inflate(R.layout.item_workout_detail, details, false)
-                                        row.findViewById<TextView>(R.id.detailIcon).text = iconFor(workout.type)
+                                        row.findViewById<TextView>(R.id.detailIcon).text = iconFor(workout)
                                         row.findViewById<TextView>(R.id.detailType).text = workout.type
                                         row.findViewById<TextView>(R.id.detailStats).text =
                                             "${workout.durationMinutes} min · ${workout.calories} kcal"
+
+                                        val sessionTag = row.findViewById<TextView>(R.id.detailSession)
+                                        if (!workout.sessionName.isNullOrBlank()) {
+                                            sessionTag.text = workout.sessionName
+                                            sessionTag.visibility = View.VISIBLE
+                                        } else {
+                                            sessionTag.visibility = View.GONE
+                                        }
 
                                         val notesView = row.findViewById<TextView>(R.id.detailNotes)
                                         if (!workout.notes.isNullOrBlank()) {
@@ -115,12 +128,20 @@ class HistoryActivity : AppCompatActivity() {
                                 daysContainer.addView(card)
                             }
                         }
+                        is UiState.Empty -> {
+                            daysContainer.removeAllViews()
+                            totalBurned.text = getString(R.string.calories_value, 0)
+                            activeDays.text = getString(R.string.zero)
+                            emptyStateTitle.setText(R.string.history_empty_title)
+                            emptyStateBody.visibility = View.VISIBLE
+                            emptyState.visibility = View.VISIBLE
+                        }
                         is UiState.Error -> {
                             emptyStateTitle.setText(R.string.history_error)
                             emptyStateBody.visibility = View.GONE
                             emptyState.visibility = View.VISIBLE
                         }
-                        else -> Unit
+                        is UiState.Loading -> Unit
                     }
                 }
             }

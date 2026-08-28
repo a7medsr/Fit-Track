@@ -123,6 +123,54 @@
 
             </LinearLayout>
 
+            <!-- Account -->
+            <LinearLayout
+                android:id="@+id/accountRow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_xl"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="@drawable/bg_card_clickable"
+                android:paddingHorizontal="@dimen/space_lg"
+                android:paddingVertical="@dimen/space_md"
+                android:focusable="true"
+                android:clickable="true">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/account_icon"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/accountLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="@dimen/space_md"
+                    android:text="@string/auth_sign_out"
+                    android:textAppearance="@style/TextAppearance.FitTrack.Section"
+                    android:textSize="14sp"
+                    android:maxLines="1"
+                    android:ellipsize="end" />
+
+                <TextView
+                    android:id="@+id/signOutBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="@dimen/space_md"
+                    android:paddingVertical="6dp"
+                    android:background="@drawable/bg_pill"
+                    android:text="@string/auth_sign_out"
+                    android:textColor="@color/brand_bright"
+                    android:textSize="12sp"
+                    android:fontFamily="sans-serif-medium"
+                    android:focusable="true"
+                    android:clickable="true" />
+
+            </LinearLayout>
+
             <!-- Quick actions -->
             <TextView
                 android:layout_width="wrap_content"

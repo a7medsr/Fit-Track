@@ -17,6 +17,7 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <ScrollView
+        android:id="@+id/recordsScroll"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:clipToPadding="false"
@@ -60,80 +61,154 @@
                 android:text="@string/hall_of_fame_subtitle"
                 android:textAppearance="@style/TextAppearance.FitTrack.Caption" />
 
-            <!-- Best day: the headline record, so it gets the green fill. -->
+            <!-- Lifetime energy: the headline number, so it gets the green fill. -->
             <LinearLayout
-                android:id="@+id/bestDayCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space_lg"
                 android:orientation="vertical"
+                android:gravity="center"
                 android:background="@drawable/bg_card_hero"
                 android:padding="@dimen/space_xl">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/best_step_day"
+                    android:text="@string/records_total_burned"
                     android:textAppearance="@style/TextAppearance.FitTrack.Overline"
                     android:textColor="@color/on_brand"
                     android:alpha="0.7" />
 
                 <TextView
-                    android:id="@+id/bestDayValue"
+                    android:id="@+id/totalCaloriesValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/space_sm"
                     android:text="@string/em_dash"
                     android:textAppearance="@style/TextAppearance.FitTrack.Metric"
-                    android:textSize="34sp"
+                    android:textSize="38sp"
                     android:textColor="@color/on_brand" />
 
                 <TextView
-                    android:id="@+id/bestDayDate"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/totalCaloriesCaption"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/space_xs"
+                    android:layout_marginTop="@dimen/space_sm"
+                    android:gravity="center"
+                    android:text="@string/em_dash"
                     android:textAppearance="@style/TextAppearance.FitTrack.Caption"
                     android:textColor="@color/on_brand"
                     android:alpha="0.75" />
 
             </LinearLayout>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_xl"
+                android:text="@string/records_consistency"
+                android:textAppearance="@style/TextAppearance.FitTrack.Section" />
+
             <LinearLayout
-                android:id="@+id/bestWeekCard"
+                android:id="@+id/statTiles"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_md"
+                android:orientation="horizontal"
+                android:baselineAligned="false" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_xl"
+                android:text="@string/records_personal_bests"
+                android:textAppearance="@style/TextAppearance.FitTrack.Section" />
+
+            <LinearLayout
+                android:id="@+id/bestsCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space_md"
                 android:orientation="vertical"
                 android:background="@drawable/bg_card"
-                android:padding="@dimen/space_xl">
+                android:paddingHorizontal="@dimen/space_lg"
+                android:paddingVertical="@dimen/space_sm" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/best_week"
-                    android:textAppearance="@style/TextAppearance.FitTrack.Overline" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_xl"
+                android:text="@string/records_lifetime"
+                android:textAppearance="@style/TextAppearance.FitTrack.Section" />
 
-                <TextView
-                    android:id="@+id/bestWeekValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/space_sm"
-                    android:text="@string/em_dash"
-                    android:textAppearance="@style/TextAppearance.FitTrack.Metric"
-                    android:textColor="@color/brand_bright" />
+            <LinearLayout
+                android:id="@+id/lifetimeCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_md"
+                android:orientation="vertical"
+                android:background="@drawable/bg_card"
+                android:paddingHorizontal="@dimen/space_lg"
+                android:paddingVertical="@dimen/space_sm" />
 
-                <TextView
-                    android:id="@+id/bestWeekDate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/space_xs"
-                    android:textAppearance="@style/TextAppearance.FitTrack.Caption" />
+            <TextView
+                android:id="@+id/topExercisesTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_xl"
+                android:text="@string/records_go_to"
+                android:textAppearance="@style/TextAppearance.FitTrack.Section" />
 
-            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/topExercisesCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_md"
+                android:orientation="vertical"
+                android:background="@drawable/bg_card"
+                android:paddingHorizontal="@dimen/space_lg"
+                android:paddingVertical="@dimen/space_sm" />
 
         </LinearLayout>
     </ScrollView>
+
+    <!-- Loading / Empty / Error all land here; only the copy changes. -->
+    <LinearLayout
+        android:id="@+id/stateView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:paddingHorizontal="@dimen/space_xxl"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/appBar"
+        app:layout_constraintBottom_toTopOf="@id/bottomNav">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_trophy"
+            android:alpha="0.4"
+            android:importantForAccessibility="no" />
+
+        <TextView
+            android:id="@+id/stateTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_md"
+            android:text="@string/records_empty_title"
+            android:textAppearance="@style/TextAppearance.FitTrack.Section" />
+
+        <TextView
+            android:id="@+id/stateBody"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_sm"
+            android:gravity="center"
+            android:text="@string/records_empty_body"
+            android:textAppearance="@style/TextAppearance.FitTrack.Caption" />
+
+    </LinearLayout>
 
     <include
         android:id="@+id/bottomNav"

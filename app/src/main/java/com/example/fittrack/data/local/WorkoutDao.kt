@@ -13,6 +13,10 @@ interface WorkoutDao {
     @Insert
     suspend fun insert(workout: WorkoutEntity)
 
+    /** Logging a saved session writes every exercise in one transaction. */
+    @Insert
+    suspend fun insertAll(workouts: List<WorkoutEntity>)
+
     @Update
     suspend fun update(workout: WorkoutEntity)
 
@@ -24,4 +28,10 @@ interface WorkoutDao {
 
     @Query("SELECT COUNT(*) FROM workouts")
     suspend fun getCount(): Int
+
+    @Query("SELECT * FROM workouts")
+    suspend fun getAllOnce(): List<WorkoutEntity>
+
+    @Query("SELECT syncId FROM workouts")
+    suspend fun getAllSyncIds(): List<String>
 }

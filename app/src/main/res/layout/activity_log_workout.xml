@@ -73,6 +73,92 @@
 
             </LinearLayout>
 
+            <!-- Body weight drives the MET calorie formula, so it is editable
+                 from the screen whose numbers it changes. -->
+            <LinearLayout
+                android:id="@+id/weightRow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_md"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="@drawable/bg_card_clickable"
+                android:paddingHorizontal="@dimen/space_lg"
+                android:paddingVertical="@dimen/space_md"
+                android:focusable="true"
+                android:clickable="true">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/weight_icon"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="@dimen/space_md"
+                    android:text="@string/weight_row_label"
+                    android:textAppearance="@style/TextAppearance.FitTrack.Section"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/weightValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/weight_placeholder"
+                    android:textAppearance="@style/TextAppearance.FitTrack.Section"
+                    android:textSize="15sp"
+                    android:textColor="@color/brand_bright" />
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_marginStart="@dimen/space_sm"
+                    android:src="@drawable/ic_chevron_right"
+                    android:contentDescription="@string/cd_edit_weight" />
+
+            </LinearLayout>
+
+            <!-- Saved gym sessions: build the list once, replay it in one tap. -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_xl"
+                android:text="@string/section_sessions"
+                android:textAppearance="@style/TextAppearance.FitTrack.Section" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_xs"
+                android:text="@string/section_sessions_hint"
+                android:textAppearance="@style/TextAppearance.FitTrack.Caption" />
+
+            <TextView
+                android:id="@+id/sessionsEmptyHint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_md"
+                android:gravity="center"
+                android:background="@drawable/bg_card"
+                android:padding="@dimen/space_xl"
+                android:text="@string/sessions_empty_body"
+                android:textAppearance="@style/TextAppearance.FitTrack.Caption" />
+
+            <LinearLayout
+                android:id="@+id/sessionsContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+            <TextView
+                android:id="@+id/newSessionBtn"
+                style="@style/Widget.FitTrack.Button.Secondary"
+                android:layout_marginTop="@dimen/space_md"
+                android:text="@string/session_new" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -87,8 +173,149 @@
                 android:text="@string/section_activities_hint"
                 android:textAppearance="@style/TextAppearance.FitTrack.Caption" />
 
+            <!-- One card for the whole manual log: the top row opens the
+                 exercise library, the controls below appear once an exercise
+                 has been chosen. -->
             <LinearLayout
-                android:id="@+id/activityCardsContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_md"
+                android:orientation="vertical"
+                android:background="@drawable/bg_card"
+                android:padding="@dimen/space_lg">
+
+                <LinearLayout
+                    android:id="@+id/chooseExerciseRow"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="?attr/selectableItemBackground"
+                    android:focusable="true"
+                    android:clickable="true">
+
+                    <TextView
+                        android:id="@+id/selectedIcon"
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
+                        android:gravity="center"
+                        android:background="@drawable/bg_icon_circle"
+                        android:textSize="22sp"
+                        android:text="@string/exercise_placeholder_icon" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:layout_marginStart="@dimen/space_md">
+
+                        <TextView
+                            android:id="@+id/selectedName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/choose_exercise"
+                            android:textAppearance="@style/TextAppearance.FitTrack.Section"
+                            android:textSize="17sp"
+                            android:maxLines="1"
+                            android:ellipsize="end" />
+
+                        <TextView
+                            android:id="@+id/selectedMeta"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="1dp"
+                            android:text="@string/choose_exercise_hint"
+                            android:textAppearance="@style/TextAppearance.FitTrack.Caption"
+                            android:maxLines="1"
+                            android:ellipsize="end" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/selectedLoggedToday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="12sp"
+                        android:fontFamily="sans-serif-medium"
+                        android:textColor="@color/brand_bright"
+                        android:background="@drawable/bg_pill"
+                        android:paddingHorizontal="@dimen/space_md"
+                        android:paddingVertical="6dp"
+                        android:visibility="gone"
+                        android:text="" />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="@dimen/space_sm"
+                        android:src="@drawable/ic_chevron_right"
+                        android:contentDescription="@string/cd_choose_exercise" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/logControls"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginTop="@dimen/space_lg">
+
+                        <TextView
+                            android:id="@+id/durationMinus"
+                            style="@style/Widget.FitTrack.Stepper"
+                            android:text="@string/duration_minus"
+                            android:contentDescription="@string/cd_decrease_duration" />
+
+                        <TextView
+                            android:id="@+id/durationValue"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="@string/duration_placeholder"
+                            android:textAppearance="@style/TextAppearance.FitTrack.Metric"
+                            android:textSize="22sp" />
+
+                        <TextView
+                            android:id="@+id/durationPlus"
+                            style="@style/Widget.FitTrack.Stepper"
+                            android:text="@string/duration_plus"
+                            android:contentDescription="@string/cd_increase_duration" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/estimatedCalories"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_md"
+                        android:gravity="center"
+                        android:text="@string/calories_estimate_zero"
+                        android:textAppearance="@style/TextAppearance.FitTrack.Caption" />
+
+                    <TextView
+                        android:id="@+id/submitActivityBtn"
+                        style="@style/Widget.FitTrack.Button.Primary"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="@dimen/space_lg"
+                        android:text="@string/action_submit"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- The auto-tracked Walking card is inflated in here, unchanged. -->
+            <LinearLayout
+                android:id="@+id/walkingCardContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical" />

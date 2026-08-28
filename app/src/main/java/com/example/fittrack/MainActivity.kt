@@ -15,6 +15,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.example.fittrack.ui.charts.ChartsActivity
 import com.example.fittrack.ui.common.UiState
 import com.example.fittrack.ui.dashboard.DashboardViewModel
+import com.example.fittrack.ui.auth.SignInActivity
 import com.example.fittrack.ui.logworkout.LogWorkoutActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -86,6 +87,33 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, ChartsActivity::class.java))
         }
 
+        // Account row: who is signed in, and the way back out.
+        val accountLabel = findViewById<TextView>(R.id.accountLabel)
+        val accountAction = findViewById<TextView>(R.id.signOutBtn)
+        val signedInUser = viewModel.currentUser
+
+        if (signedInUser == null) {
+            accountLabel.setText(R.string.auth_signed_out)
+            accountAction.setText(R.string.auth_sign_in_short)
+            accountAction.setOnClickListener { goToSignIn() }
+        } else {
+            accountLabel.text = getString(
+                R.string.auth_signed_in_as,
+                signedInUser.displayName ?: signedInUser.email ?: "your account"
+            )
+            accountAction.setText(R.string.auth_sign_out)
+            accountAction.setOnClickListener {
+                androidx.appcompat.app.AlertDialog.Builder(this)
+                    .setMessage(R.string.auth_sign_out_confirm)
+                    .setNegativeButton(R.string.action_cancel, null)
+                    .setPositiveButton(R.string.auth_sign_out) { _, _ ->
+                        viewModel.signOut()
+                        goToSignIn()
+                    }
+                    .show()
+            }
+        }
+
         com.example.fittrack.ui.common.NavBarHelper.setup(this, com.example.fittrack.ui.common.NavTab.HOME)
 
         lifecycleScope.launch {
@@ -103,5 +131,13 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun goToSignIn() {
+        startActivity(
+            Intent(this, SignInActivity::class.java)
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+        )
+        finishAffinity()
     }
 }

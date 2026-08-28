@@ -5,6 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.fittrack.data.prefs.GoalPreferences
 import com.example.fittrack.data.sensor.StepSensorManager
 import com.example.fittrack.domain.model.DailySteps
+import com.example.fittrack.domain.model.AuthUser
+import com.example.fittrack.domain.repository.AuthRepository
 import com.example.fittrack.domain.repository.StepRepository
 import com.example.fittrack.ui.common.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,8 +21,13 @@ import javax.inject.Inject
 class DashboardViewModel @Inject constructor(
     private val stepSensorManager: StepSensorManager,
     private val stepRepository: StepRepository,
-    private val goalPreferences: GoalPreferences
+    private val goalPreferences: GoalPreferences,
+    private val authRepository: AuthRepository
 ) : ViewModel() {
+
+    val currentUser: AuthUser? get() = authRepository.currentUser
+
+    fun signOut() = authRepository.signOut()
 
     private val _uiState = MutableStateFlow<UiState<DailySteps>>(UiState.Loading)
     val uiState: StateFlow<UiState<DailySteps>> = _uiState.asStateFlow()

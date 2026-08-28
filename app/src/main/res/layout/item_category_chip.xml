@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Pill tab, inflated into the exercise library's category row. -->
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/CategoryChip"
+    android:text="@string/em_dash" />

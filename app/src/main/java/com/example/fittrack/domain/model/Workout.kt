@@ -6,5 +6,7 @@ data class Workout(
     val durationMinutes: Int,
     val calories: Int,
     val date: String,
-    val notes: String? = null
+    val notes: String? = null,
+    val exerciseIcon: String? = null,
+    val sessionName: String? = null
 )

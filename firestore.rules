@@ -1,0 +1,29 @@
+rules_version = '2';
+
+// FitTrack Firestore security rules.
+//
+// Paste these into Firebase console -> Firestore Database -> Rules -> Publish.
+//
+// This matters: a database created in "test mode" allows ANY authenticated
+// user - and after 30 days, no one - to read and write every document. These
+// rules lock each account to its own subtree, so one signed-in user can never
+// read or modify another user's workouts.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Everything the app writes lives under users/{uid}/...
+    match /users/{userId} {
+      allow read, write: if isOwner(userId);
+
+      match /{document=**} {
+        allow read, write: if isOwner(userId);
+      }
+    }
+
+    // Anything not matched above is denied by default.
+
+    function isOwner(userId) {
+      return request.auth != null && request.auth.uid == userId;
+    }
+  }
+}

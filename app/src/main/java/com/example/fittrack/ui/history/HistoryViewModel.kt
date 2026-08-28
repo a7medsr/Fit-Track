@@ -44,7 +44,8 @@ class HistoryViewModel @Inject constructor(
                             )
                         }
                         .sortedByDescending { it.date }
-                    _uiState.value = UiState.Success(grouped)
+                    _uiState.value =
+                        if (grouped.isEmpty()) UiState.Empty else UiState.Success(grouped)
                 }
         }
     }

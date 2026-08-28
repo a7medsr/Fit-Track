@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Equal-width tile for the three consistency figures. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@drawable/bg_card"
+    android:paddingVertical="@dimen/space_lg"
+    android:paddingHorizontal="@dimen/space_sm">
+
+    <TextView
+        android:id="@+id/tileValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/zero"
+        android:textAppearance="@style/TextAppearance.FitTrack.Metric"
+        android:textSize="24sp"
+        android:textColor="@color/brand_bright" />
+
+    <TextView
+        android:id="@+id/tileLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_xs"
+        android:gravity="center"
+        android:text="@string/em_dash"
+        android:textAppearance="@style/TextAppearance.FitTrack.Caption"
+        android:textSize="11sp" />
+
+</LinearLayout>

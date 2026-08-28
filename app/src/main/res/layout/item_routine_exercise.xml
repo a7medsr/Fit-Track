@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- One exercise inside the session editor: duration stepper plus reorder and remove. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/space_sm"
+    android:orientation="vertical"
+    android:background="@drawable/bg_card"
+    android:padding="@dimen/space_md">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/itemIcon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:background="@drawable/bg_icon_circle"
+            android:textSize="20sp"
+            android:text="@string/em_dash" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_marginStart="@dimen/space_md">
+
+            <TextView
+                android:id="@+id/itemName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/activity_placeholder"
+                android:textAppearance="@style/TextAppearance.FitTrack.Section"
+                android:textSize="15sp"
+                android:maxLines="1"
+                android:ellipsize="end" />
+
+            <TextView
+                android:id="@+id/itemMeta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:text="@string/exercise_meta_placeholder"
+                android:textAppearance="@style/TextAppearance.FitTrack.Caption"
+                android:textSize="12sp"
+                android:maxLines="1"
+                android:ellipsize="end" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/itemMoveUp"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:padding="7dp"
+            android:rotation="90"
+            android:src="@drawable/ic_chevron_left"
+            android:background="@drawable/bg_icon_button_ghost"
+            android:contentDescription="@string/cd_move_up"
+            android:focusable="true"
+            android:clickable="true" />
+
+        <ImageView
+            android:id="@+id/itemMoveDown"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:padding="7dp"
+            android:rotation="90"
+            android:src="@drawable/ic_chevron_right"
+            android:background="@drawable/bg_icon_button_ghost"
+            android:contentDescription="@string/cd_move_down"
+            android:focusable="true"
+            android:clickable="true" />
+
+        <ImageView
+            android:id="@+id/itemRemove"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:layout_marginStart="@dimen/space_xs"
+            android:padding="9dp"
+            android:src="@drawable/ic_close"
+            android:background="@drawable/bg_delete_button"
+            android:contentDescription="@string/cd_remove_exercise"
+            android:focusable="true"
+            android:clickable="true" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginTop="@dimen/space_md">
+
+        <TextView
+            android:id="@+id/itemMinus"
+            style="@style/Widget.FitTrack.Stepper"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:textSize="18sp"
+            android:text="@string/duration_minus"
+            android:contentDescription="@string/cd_decrease_duration" />
+
+        <TextView
+            android:id="@+id/itemDuration"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/duration_placeholder"
+            android:textAppearance="@style/TextAppearance.FitTrack.Section"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/itemPlus"
+            style="@style/Widget.FitTrack.Stepper"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:textSize="18sp"
+            android:text="@string/duration_plus"
+            android:contentDescription="@string/cd_increase_duration" />
+
+    </LinearLayout>
+
+</LinearLayout>
