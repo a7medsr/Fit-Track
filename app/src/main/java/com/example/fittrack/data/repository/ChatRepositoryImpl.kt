@@ -5,10 +5,9 @@ import com.example.fittrack.data.ai.AnswerCachePolicy
 import com.example.fittrack.data.ai.ActionResult
 import com.example.fittrack.data.ai.AiProtocol
 import com.example.fittrack.data.ai.ContextBuilder
-import com.example.fittrack.data.ai.LocalIntent
+import com.example.fittrack.data.ai.LocalAnswerEngine
 import com.example.fittrack.data.ai.RateLimiter
 import com.example.fittrack.data.ai.TierClassifier
-import com.example.fittrack.data.ai.UserSnapshot
 import com.example.fittrack.data.local.AiResponseCacheEntity
 import com.example.fittrack.data.local.ChatMessageDao
 import com.example.fittrack.data.local.ChatMessageEntity
@@ -46,6 +45,7 @@ class ChatRepositoryImpl @Inject constructor(
     private val provider: AiProvider,
     private val contextBuilder: ContextBuilder,
     private val actionExecutor: ActionExecutor,
+    private val localAnswerEngine: LocalAnswerEngine,
     private val rateLimiter: RateLimiter
 ) : ChatRepository {
 
@@ -75,10 +75,8 @@ class ChatRepositoryImpl @Inject constructor(
         )
 
         // ---- Tier 1: answered locally, no network, works offline ----
-        val localIntent = TierClassifier.classify(message)
-        if (localIntent != null) {
-            val snapshot = contextBuilder.snapshot()
-            appendAssistant(userId, answerLocally(localIntent, snapshot))
+        TierClassifier.classify(message)?.let { query ->
+            appendAssistant(userId, localAnswerEngine.answer(query))
             return null
         }
 
@@ -177,47 +175,6 @@ class ChatRepositoryImpl @Inject constructor(
 
     /** Human-readable text for a pending write, used by the confirm chip. */
     suspend fun describePending(action: AiAction): String = actionExecutor.describe(action)
-
-    // ------------------------------------------------------------ Tier 1
-
-    private fun answerLocally(intent: LocalIntent, s: UserSnapshot): String = when (intent) {
-        LocalIntent.STEPS_REMAINING ->
-            if (s.stepsRemaining == 0) {
-                "You've hit your goal of ${s.goal} steps today. ${s.stepsToday} so far."
-            } else {
-                "${s.stepsRemaining} steps to go. You're on ${s.stepsToday} of ${s.goal} (${s.goalPercent}%)."
-            }
-
-        LocalIntent.STEPS_TODAY ->
-            "${s.stepsToday} steps today, ${s.goalPercent}% of your ${s.goal} goal."
-
-        LocalIntent.CURRENT_GOAL ->
-            "Your daily goal is ${s.goal} steps. You're on ${s.stepsToday} today."
-
-        LocalIntent.STREAK ->
-            if (s.streak == 0) {
-                "No active streak right now. Log something today to start one."
-            } else {
-                "You're on a ${s.streak}-day streak."
-            }
-
-        LocalIntent.CALORIES_TODAY ->
-            "About ${s.caloriesToday} kcal burned today, including ${s.walkingCaloriesToday} from walking."
-
-        LocalIntent.WORKOUTS_TODAY ->
-            if (s.workoutsToday.isEmpty()) {
-                "Nothing logged today yet, aside from your ${s.stepsToday} steps."
-            } else {
-                "Today: " + s.workoutsToday.joinToString(", ") { "${it.first} ${it.second} min" } + "."
-            }
-
-        LocalIntent.BODY_WEIGHT ->
-            "Your body weight is set to ${s.weightKg} kg. Calorie estimates use it."
-
-        LocalIntent.HELP ->
-            "Ask me how far you are today, set your step goal or weight, log a workout, " +
-                "add a custom exercise, or ask general fitness questions."
-    }
 
     // ------------------------------------------------------------ helpers
 
