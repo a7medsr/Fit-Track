@@ -3,6 +3,7 @@ package com.example.fittrack.di
 import android.content.Context
 import androidx.room.Room
 import com.example.fittrack.data.local.AppDatabase
+import com.example.fittrack.data.local.ChatMessageDao
 import com.example.fittrack.data.local.ExerciseDao
 import com.example.fittrack.data.local.Migrations
 import com.example.fittrack.data.local.RoutineDao
@@ -48,5 +49,9 @@ object DatabaseModule {
     @Provides
     fun provideRoutineDao(database: AppDatabase): RoutineDao {
         return database.routineDao()
+    }
+    @Provides
+    fun provideChatMessageDao(database: AppDatabase): ChatMessageDao {
+        return database.chatMessageDao()
     }
 }

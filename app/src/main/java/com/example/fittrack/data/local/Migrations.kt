@@ -12,6 +12,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
  *   v3  + exercises, and workouts.exerciseIcon
  *   v4  + routines and routine_exercises, and workouts.sessionName
  *   v5  + syncId on workouts/exercises/routines, for the Firebase mirror
+ *   v6  + chat_messages and ai_response_cache, for the assistant
  */
 object Migrations {
 
@@ -114,5 +115,40 @@ object Migrations {
         }
     }
 
-    val ALL = arrayOf(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5)
+    /**
+     * Assistant history and the Tier 3 answer cache. Both are device-local and
+     * are deliberately excluded from the Firestore mirror.
+     */
+    val MIGRATION_5_6 = object : Migration(5, 6) {
+        override fun migrate(db: SupportSQLiteDatabase) {
+            db.execSQL(
+                """
+                CREATE TABLE IF NOT EXISTS `chat_messages` (
+                    `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                    `userId` TEXT NOT NULL,
+                    `role` TEXT NOT NULL,
+                    `text` TEXT NOT NULL,
+                    `timestamp` INTEGER NOT NULL,
+                    `pendingActionJson` TEXT,
+                    `actionState` TEXT NOT NULL
+                )
+                """.trimIndent()
+            )
+            db.execSQL(
+                "CREATE INDEX IF NOT EXISTS `index_chat_messages_userId` ON `chat_messages` (`userId`)"
+            )
+            db.execSQL(
+                """
+                CREATE TABLE IF NOT EXISTS `ai_response_cache` (
+                    `questionHash` TEXT NOT NULL,
+                    `answer` TEXT NOT NULL,
+                    `createdAt` INTEGER NOT NULL,
+                    PRIMARY KEY(`questionHash`)
+                )
+                """.trimIndent()
+            )
+        }
+    }
+
+    val ALL = arrayOf(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6)
 }

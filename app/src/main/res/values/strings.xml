@@ -26,6 +26,26 @@
     <string name="auth_syncing">Syncing…</string>
     <string name="auth_synced">Synced</string>
 
+    <!-- Assistant -->
+    <string name="chat_title">Assistant</string>
+    <string name="chat_disclaimer">General fitness guidance only — not medical advice.</string>
+    <string name="chat_input_hint">Ask about your stats, or say what to log…</string>
+    <string name="chat_send">Send message</string>
+    <string name="chat_empty_icon">💬</string>
+    <string name="chat_empty_title">Ask me anything</string>
+    <string name="chat_empty_body">Try “how many steps left today?”, “set my goal to 12000”, or “is soreness after lifting normal?”</string>
+    <string name="chat_error_title">Assistant unavailable</string>
+    <string name="chat_confirm">Confirm</string>
+    <string name="chat_action_done">✓ Done</string>
+    <string name="chat_action_cancelled">Cancelled</string>
+    <string name="chat_action_failed">Not applied</string>
+    <string name="chat_error_no_key">Assistant unavailable: no API key set. Questions about your own stats still work.</string>
+    <string name="chat_error_offline">You are offline. Questions about your own stats still work.</string>
+    <string name="chat_error_rate_limited">Too many requests just now. Try again in a moment.</string>
+    <string name="chat_error_upstream">Assistant unavailable: %1$s</string>
+    <string name="dashboard_assistant">Assistant</string>
+    <string name="dashboard_assistant_subtitle">Ask about your stats</string>
+
     <!-- Navigation -->
     <string name="nav_home">Home</string>
     <string name="nav_history">History</string>

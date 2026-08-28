@@ -1,8 +1,17 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
     alias(libs.plugins.google.services)
+}
+
+// Keys live in local.properties, which is gitignored. Absent keys fall back to
+// empty strings so the project still builds for anyone who clones it.
+val localProps = Properties().apply {
+    val f = rootProject.file("local.properties")
+    if (f.exists()) f.inputStream().use { load(it) }
 }
 
 android {
@@ -26,6 +35,15 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "GEMINI_API_KEY", "\"${localProps.getProperty("GEMINI_API_KEY", "")}\"")
+        buildConfigField("String", "XAI_API_KEY", "\"${localProps.getProperty("XAI_API_KEY", "")}\"")
+        buildConfigField("String", "AI_PROVIDER", "\"${localProps.getProperty("AI_PROVIDER", "gemini")}\"")
+        buildConfigField("String", "GEMINI_MODEL", "\"${localProps.getProperty("GEMINI_MODEL", "gemini-flash-lite-latest")}\"")
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 
     buildTypes {
@@ -69,5 +87,15 @@ dependencies {
     implementation(libs.androidx.credentials)
     implementation(libs.androidx.credentials.play.services)
     implementation(libs.googleid)
+
+    // Assistant networking. Provider-agnostic, so the base URL and DTOs are the
+    // only things that change when swapping model vendors.
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.gson)
+    implementation(libs.okhttp)
+    testImplementation(libs.kotlinx.coroutines.test)
+    // Android ships org.json as a stub that throws in JVM unit tests; this puts
+    // the real implementation on the test classpath so parsing can be tested.
+    testImplementation(libs.org.json)
 
 }

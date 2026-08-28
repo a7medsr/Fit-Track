@@ -123,6 +123,58 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/quickAssistantBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_md"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="@drawable/bg_card_clickable"
+                android:paddingHorizontal="@dimen/space_lg"
+                android:paddingVertical="@dimen/space_lg"
+                android:focusable="true"
+                android:clickable="true">
+
+                <TextView
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:gravity="center"
+                    android:background="@drawable/bg_icon_circle"
+                    android:textSize="20sp"
+                    android:text="@string/chat_empty_icon" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="@dimen/space_md"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/dashboard_assistant"
+                        android:textAppearance="@style/TextAppearance.FitTrack.Section"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="1dp"
+                        android:text="@string/dashboard_assistant_subtitle"
+                        android:textAppearance="@style/TextAppearance.FitTrack.Caption" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_chevron_right"
+                    android:importantForAccessibility="no" />
+
+            </LinearLayout>
+
             <!-- Account -->
             <LinearLayout
                 android:id="@+id/accountRow"
