@@ -16,6 +16,7 @@ import com.example.fittrack.ui.charts.ChartsActivity
 import com.example.fittrack.ui.common.UiState
 import com.example.fittrack.ui.dashboard.DashboardViewModel
 import com.example.fittrack.ui.auth.SignInActivity
+import com.example.fittrack.ui.chat.ChatActivity
 import com.example.fittrack.ui.logworkout.LogWorkoutActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -85,6 +86,9 @@ class MainActivity : AppCompatActivity() {
         }
         findViewById<View>(R.id.quickChartsBtn).setOnClickListener {
             startActivity(Intent(this, ChartsActivity::class.java))
+        }
+        findViewById<View>(R.id.quickAssistantBtn).setOnClickListener {
+            startActivity(Intent(this, ChatActivity::class.java))
         }
 
         // Account row: who is signed in, and the way back out.

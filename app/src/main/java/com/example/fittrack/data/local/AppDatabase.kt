@@ -9,9 +9,11 @@ import androidx.room.RoomDatabase
         WorkoutEntity::class,
         ExerciseEntity::class,
         RoutineEntity::class,
-        RoutineExerciseEntity::class
+        RoutineExerciseEntity::class,
+        ChatMessageEntity::class,
+        AiResponseCacheEntity::class
     ],
-    version = 5,
+    version = 6,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -19,4 +21,5 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun workoutDao(): WorkoutDao
     abstract fun exerciseDao(): ExerciseDao
     abstract fun routineDao(): RoutineDao
+    abstract fun chatMessageDao(): ChatMessageDao
 }
