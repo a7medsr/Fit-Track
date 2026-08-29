@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  The launch screen. Everything starts invisible and is animated in from code,
+  so the first frame is a plain brand-coloured background, identical to the
+  system splash that precedes it. That is what stops the handover flickering.
+-->
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/splashRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_base">
+
+    <com.example.fittrack.ui.splash.PulseTraceView
+        android:id="@+id/pulseTrace"
+        android:layout_width="0dp"
+        android:layout_height="120dp"
+        android:layout_marginHorizontal="@dimen/space_xxl"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/splashWordmark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/space_xl"
+        android:text="@string/app_name"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        android:textColor="@color/text_primary"
+        android:letterSpacing="-0.02"
+        android:includeFontPadding="false"
+        android:alpha="0"
+        app:layout_constraintBottom_toTopOf="@id/pulseTrace"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:alpha="1" />
+
+    <!-- The line the whole screen exists for, so it is sized and lit to be
+         read from across a room rather than tucked under the mark. The glow is
+         a shadow layer in the brand colour, which needs a software layer to
+         render, hence the explicit layerType. -->
+    <TextView
+        android:id="@+id/splashSlogan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_xxl"
+        android:text="@string/app_slogan"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:fontFamily="sans-serif-medium"
+        android:textColor="@color/brand_bright"
+        android:textAllCaps="true"
+        android:includeFontPadding="false"
+        android:shadowColor="@color/brand"
+        android:shadowRadius="18"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="14dp"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:layerType="software"
+        android:alpha="0"
+        app:layout_constraintTop_toBottomOf="@id/pulseTrace"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:alpha="1" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -16,14 +16,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-/** Whether the form is collecting a new account or an existing one. */
-enum class AuthMode { SIGN_IN, SIGN_UP }
-
 data class SignInFormState(
-    val mode: AuthMode = AuthMode.SIGN_IN,
     val busy: Boolean = false,
-    val error: String? = null,
-    val notice: String? = null
+    val error: String? = null
 )
 
 sealed class SignInEvent {
@@ -32,6 +27,11 @@ sealed class SignInEvent {
     data class SyncWarning(val message: String) : SignInEvent()
 }
 
+/**
+ * Google is the only way in, so there is no form to validate and no sign-up
+ * mode: the first Google sign-in creates the account, and every one after it
+ * signs into the same one.
+ */
 @HiltViewModel
 class SignInViewModel @Inject constructor(
     private val authRepository: AuthRepository,
@@ -46,82 +46,11 @@ class SignInViewModel @Inject constructor(
 
     val alreadySignedIn: Boolean get() = authRepository.currentUser != null
 
-    fun toggleMode() {
-        _state.value = _state.value.copy(
-            mode = if (_state.value.mode == AuthMode.SIGN_IN) AuthMode.SIGN_UP else AuthMode.SIGN_IN,
-            error = null,
-            notice = null
-        )
-    }
-
-    fun submitEmail(
-        email: String,
-        password: String,
-        firstName: String = "",
-        lastName: String = ""
-    ) {
-        val signingUp = _state.value.mode == AuthMode.SIGN_UP
-
-        if (email.isBlank() || password.isBlank()) {
-            _state.value = _state.value.copy(error = "Enter your email and password.")
-            return
-        }
-        if (signingUp && (firstName.isBlank() || lastName.isBlank())) {
-            _state.value = _state.value.copy(error = "Enter your first and last name.")
-            return
-        }
-        if (signingUp && password.length < MIN_PASSWORD) {
-            _state.value = _state.value.copy(
-                error = "Use a password of at least $MIN_PASSWORD characters."
-            )
-            return
-        }
-
-        launchAuth {
-            if (signingUp) {
-                authRepository.signUpWithEmail(
-                    email,
-                    password,
-                    "${firstName.trim()} ${lastName.trim()}"
-                )
-            } else {
-                authRepository.signInWithEmail(email, password)
-            }
-        }
-    }
-
     fun submitGoogleToken(idToken: String) {
-        launchAuth { authRepository.signInWithGoogle(idToken) }
-    }
-
-    fun reportGoogleFailure(message: String) {
-        _state.value = _state.value.copy(busy = false, error = message)
-    }
-
-    fun setBusy(busy: Boolean) {
-        _state.value = _state.value.copy(busy = busy, error = null)
-    }
-
-    fun sendPasswordReset(email: String) {
         viewModelScope.launch {
-            _state.value = _state.value.copy(busy = true, error = null, notice = null)
-            when (val outcome = authRepository.sendPasswordReset(email)) {
-                is AuthOutcome.Success -> _state.value = _state.value.copy(
-                    busy = false,
-                    notice = "Password reset email sent."
-                )
-                is AuthOutcome.Failure -> _state.value = _state.value.copy(
-                    busy = false,
-                    error = outcome.message
-                )
-            }
-        }
-    }
+            _state.value = _state.value.copy(busy = true, error = null)
 
-    private fun launchAuth(block: suspend () -> AuthOutcome) {
-        viewModelScope.launch {
-            _state.value = _state.value.copy(busy = true, error = null, notice = null)
-            when (val outcome = block()) {
+            when (val outcome = authRepository.signInWithGoogle(idToken)) {
                 is AuthOutcome.Failure ->
                     _state.value = _state.value.copy(busy = false, error = outcome.message)
 
@@ -140,7 +69,11 @@ class SignInViewModel @Inject constructor(
         }
     }
 
-    private companion object {
-        const val MIN_PASSWORD = 6
+    fun reportGoogleFailure(message: String) {
+        _state.value = _state.value.copy(busy = false, error = message)
+    }
+
+    fun setBusy(busy: Boolean) {
+        _state.value = _state.value.copy(busy = busy, error = null)
     }
 }

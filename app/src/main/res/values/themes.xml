@@ -145,6 +145,17 @@
         <item name="android:textColorHint">@color/text_tertiary</item>
     </style>
 
+    <!--
+      The system draws this before any of our code runs. Matching its background
+      to the app background is what makes the handover to the custom animation
+      invisible instead of a flash.
+    -->
+    <style name="Theme.FitTrack.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/bg_base</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+        <item name="postSplashScreenTheme">@style/Theme.FitTrack</item>
+    </style>
+
     <style name="NavItem">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">match_parent</item>

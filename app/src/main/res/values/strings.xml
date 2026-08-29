@@ -2,21 +2,13 @@
     <string name="app_name">FitTrack</string>
 
     <!-- Auth -->
-    <string name="auth_title_sign_in">Welcome back</string>
-    <string name="auth_title_sign_up">Create your account</string>
-    <string name="auth_subtitle_sign_in">Sign in to sync your workouts across devices.</string>
-    <string name="auth_subtitle_sign_up">Your workouts stay on this device and back up to your account.</string>
-    <string name="auth_email_hint">Email</string>
-    <string name="auth_password_hint">Password</string>
-    <string name="auth_action_sign_in">Sign in</string>
-    <string name="auth_action_sign_up">Create account</string>
+    <string name="app_slogan">Feel the pulse</string>
+    <string name="auth_title_google">Sign in with Google</string>
+    <string name="auth_subtitle_google">FitTrack uses your Google account. There is no separate password to create or forget.</string>
     <string name="auth_action_google">Continue with Google</string>
-    <string name="auth_forgot_password">Forgot your password?</string>
-    <string name="auth_or">or</string>
+    <string name="auth_google_explainer">Your name and photo come from Google. Other members see them in a community; your email address is never shown.</string>
     <string name="auth_skip">Continue without an account</string>
     <string name="auth_sign_in_short">Sign in</string>
-    <string name="auth_toggle_to_sign_up">New here? Create an account</string>
-    <string name="auth_toggle_to_sign_in">Already have an account? Sign in</string>
     <string name="auth_sync_warning">Signed in, but sync failed: %1$s</string>
     <string name="auth_signed_in_as">Signed in as %1$s</string>
     <string name="auth_sign_out">Sign out</string>
@@ -317,6 +309,10 @@
 
     <string name="community_empty">Nothing here yet.</string>
     <string name="community_signed_out">Sign in to join a community.</string>
+    <!-- Google supplies a name, so the prompt these belong to is a fallback for
+         the rare account that has none. -->
+    <string name="auth_first_name_hint">First name</string>
+    <string name="auth_last_name_hint">Last name</string>
     <string name="community_name_prompt_title">What should we call you?</string>
     <string name="community_name_prompt_body">Other members see this on your posts and on the leaderboard. Your email address is never shown.</string>
     <string name="community_name_prompt_save">Save</string>
@@ -384,8 +380,6 @@
     <string name="community_comment_one">1 comment</string>
     <string name="community_comment_many">%1$d comments</string>
 
-    <string name="auth_first_name_hint">First name</string>
-    <string name="auth_last_name_hint">Last name</string>
 
     <string name="cd_create_community">Create a community</string>
     <string name="cd_post_photo">Photo attached to this post</string>

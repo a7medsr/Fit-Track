@@ -12,21 +12,15 @@ interface AuthRepository {
     fun observeUser(): Flow<AuthUser?>
 
     /**
-     * [displayName] is required at sign-up because a community shows it to
-     * strangers. Without one, the only name available is the email address,
-     * and publishing that is a leak, not a fallback.
+     * The only way in. Google is the sole provider, so the first sign-in
+     * creates the account and every one after it returns to the same one --
+     * there is no separate sign-up, and no password to reset.
      */
-    suspend fun signUpWithEmail(
-        email: String,
-        password: String,
-        displayName: String
-    ): AuthOutcome
+    suspend fun signInWithGoogle(idToken: String): AuthOutcome
 
     /** Renames the account everywhere, including on the user's other devices. */
     suspend fun updateDisplayName(displayName: String): AuthOutcome
-    suspend fun signInWithEmail(email: String, password: String): AuthOutcome
-    suspend fun signInWithGoogle(idToken: String): AuthOutcome
-    suspend fun sendPasswordReset(email: String): AuthOutcome
+
     /**
      * Short-lived Firebase ID token, for the VPS to verify server-side. Null
      * when signed out.

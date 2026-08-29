@@ -17,18 +17,24 @@
         android:supportsRtl="true"
         android:networkSecurityConfig="@xml/network_security_config"
         android:theme="@style/Theme.FitTrack">
-        <!-- The launcher is the sign-in gate; it forwards straight to
-             MainActivity when a session already exists. -->
+        <!-- The launcher is the branded splash. It hands over to the
+             sign-in gate, which forwards straight to MainActivity when a
+             session already exists, so routing stays in one place. -->
         <activity
-            android:name=".ui.auth.SignInActivity"
+            android:name=".ui.splash.SplashActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustResize">
+            android:noHistory="true"
+            android:theme="@style/Theme.FitTrack.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.auth.SignInActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".MainActivity"
             android:exported="false"
