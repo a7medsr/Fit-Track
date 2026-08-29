@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Five-tab bottom bar. Every tab is a container so it can hold an icon plus a
+  Six-tab bottom bar. Every tab is a container so it can hold an icon plus a
   label; NavBarHelper looks the containers up by id and tints their children.
   "Log" is styled as a raised badge because it is the primary action.
 -->
@@ -98,6 +98,23 @@
             android:id="@+id/navRecordsLabel"
             style="@style/NavItemLabel"
             android:text="@string/nav_records" />
+    </LinearLayout>
+
+    <LinearLayout android:id="@+id/navCommunity" style="@style/NavItem">
+        <FrameLayout
+            android:layout_width="40dp"
+            android:layout_height="40dp">
+            <ImageView
+                android:id="@+id/navCommunityIcon"
+                style="@style/NavItemIcon"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_nav_community"
+                android:importantForAccessibility="no" />
+        </FrameLayout>
+        <TextView
+            android:id="@+id/navCommunityLabel"
+            style="@style/NavItemLabel"
+            android:text="@string/nav_community" />
     </LinearLayout>
 
 </LinearLayout>

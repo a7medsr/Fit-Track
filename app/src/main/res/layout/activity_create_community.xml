@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_base"
+    android:fitsSystemWindows="true">
+
+    <include
+        android:id="@+id/appBar"
+        layout="@layout/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/app_bar_height"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintTop_toBottomOf="@id/appBar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/screen_margin"
+            android:paddingBottom="@dimen/content_bottom_padding">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_lg"
+                android:text="@string/community_icon_label"
+                android:textAppearance="@style/TextAppearance.FitTrack.Overline" />
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_sm"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:id="@+id/iconRow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" />
+
+            </HorizontalScrollView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_xl"
+                android:text="@string/community_name_label"
+                android:textAppearance="@style/TextAppearance.FitTrack.Overline" />
+
+            <EditText
+                android:id="@+id/nameInput"
+                style="@style/Widget.FitTrack.Input"
+                android:layout_height="@dimen/button_height"
+                android:layout_marginTop="@dimen/space_sm"
+                android:paddingHorizontal="@dimen/space_lg"
+                android:paddingVertical="0dp"
+                android:gravity="center_vertical"
+                android:hint="@string/community_name_hint"
+                android:inputType="text|textCapWords"
+                android:maxLength="40"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:importantForAutofill="no"
+                android:textSize="15sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_lg"
+                android:text="@string/community_description_label"
+                android:textAppearance="@style/TextAppearance.FitTrack.Overline" />
+
+            <EditText
+                android:id="@+id/descriptionInput"
+                style="@style/Widget.FitTrack.Input"
+                android:layout_marginTop="@dimen/space_sm"
+                android:gravity="top|start"
+                android:minHeight="80dp"
+                android:hint="@string/community_description_hint"
+                android:inputType="textMultiLine|textCapSentences"
+                android:maxLength="140"
+                android:maxLines="3"
+                android:importantForAutofill="no"
+                android:textSize="15sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_xl"
+                android:text="@string/community_metric_label"
+                android:textAppearance="@style/TextAppearance.FitTrack.Overline" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_xs"
+                android:text="@string/community_metric_explainer"
+                android:textAppearance="@style/TextAppearance.FitTrack.Caption" />
+
+            <LinearLayout
+                android:id="@+id/metricRow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_sm"
+                android:orientation="vertical" />
+
+            <TextView
+                android:id="@+id/errorText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_lg"
+                android:textAppearance="@style/TextAppearance.FitTrack.Caption"
+                android:textColor="@color/danger"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/createBtn"
+                style="@style/Widget.FitTrack.Button.Primary"
+                android:layout_marginTop="@dimen/space_xl"
+                android:text="@string/community_action_create" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

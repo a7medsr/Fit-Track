@@ -3,11 +3,13 @@ package com.example.fittrack.ui.auth
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -33,6 +35,9 @@ class SignInActivity : AppCompatActivity() {
 
     private lateinit var emailInput: EditText
     private lateinit var passwordInput: EditText
+    private lateinit var firstNameInput: EditText
+    private lateinit var lastNameInput: EditText
+    private lateinit var nameRow: View
     private lateinit var authTitle: TextView
     private lateinit var authSubtitle: TextView
     private lateinit var authMessage: TextView
@@ -52,6 +57,9 @@ class SignInActivity : AppCompatActivity() {
 
         emailInput = findViewById(R.id.emailInput)
         passwordInput = findViewById(R.id.passwordInput)
+        firstNameInput = findViewById(R.id.firstNameInput)
+        lastNameInput = findViewById(R.id.lastNameInput)
+        nameRow = findViewById(R.id.nameRow)
         authTitle = findViewById(R.id.authTitle)
         authSubtitle = findViewById(R.id.authSubtitle)
         authMessage = findViewById(R.id.authMessage)
@@ -62,7 +70,9 @@ class SignInActivity : AppCompatActivity() {
         primaryBtn.setOnClickListener {
             viewModel.submitEmail(
                 emailInput.text.toString(),
-                passwordInput.text.toString()
+                passwordInput.text.toString(),
+                firstNameInput.text.toString(),
+                lastNameInput.text.toString()
             )
         }
         toggleModeBtn.setOnClickListener { viewModel.toggleMode() }
@@ -95,6 +105,19 @@ class SignInActivity : AppCompatActivity() {
 
     private fun render(state: SignInFormState) {
         val signingUp = state.mode == AuthMode.SIGN_UP
+
+        // Only asked for when creating an account. The name is shown to other
+        // people in a community, so it cannot be skipped there -- but there is
+        // no reason to ask an existing account for it again.
+        nameRow.visibility = if (signingUp) View.VISIBLE else View.GONE
+        // A gone view contributes no margin, so the gap above the first visible
+        // field has to move with it, or signing in sits tight under the
+        // subtitle while signing up looks right.
+        emailInput.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+            topMargin = resources.getDimensionPixelSize(
+                if (signingUp) R.dimen.space_md else R.dimen.space_xl
+            )
+        }
 
         authTitle.setText(
             if (signingUp) R.string.auth_title_sign_up else R.string.auth_title_sign_in

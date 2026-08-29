@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- One emoji plus its tally. The background is swapped in code to show which
+     one the viewer chose. -->
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="34dp"
+    android:layout_marginEnd="@dimen/space_sm"
+    android:gravity="center"
+    android:paddingHorizontal="@dimen/space_md"
+    android:background="@drawable/bg_chip_unselected"
+    android:textColor="@color/text_secondary"
+    android:textSize="14sp"
+    android:includeFontPadding="false"
+    android:focusable="true"
+    android:clickable="true"
+    tools:text="💪 3" />

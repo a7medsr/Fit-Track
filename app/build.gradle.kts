@@ -95,6 +95,10 @@ dependencies {
     implementation(libs.retrofit.gson)
     implementation(libs.okhttp)
     implementation(libs.androidx.exifinterface)
+    // Remote avatars and post photos in scrolling lists. Handles the request
+    // cancellation a RecyclerView needs; a hand-rolled loader shows the wrong
+    // face in a recycled row sooner or later.
+    implementation(libs.coil)
     testImplementation(libs.kotlinx.coroutines.test)
     // Android ships org.json as a stub that throws in JVM unit tests; this puts
     // the real implementation on the test classpath so parsing can be tested.

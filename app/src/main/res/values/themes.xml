@@ -163,11 +163,15 @@
         <item name="android:layout_height">22dp</item>
     </style>
 
+    <!-- 10sp, not 11: with six tabs a 320dp screen gives each one about 53dp,
+         and "Community" does not fit at the larger size. -->
     <style name="NavItemLabel">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">3dp</item>
-        <item name="android:textSize">11sp</item>
+        <item name="android:textSize">10sp</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
         <item name="android:fontFamily">sans-serif-medium</item>
         <item name="android:textColor">@color/text_secondary</item>
         <item name="android:includeFontPadding">false</item>

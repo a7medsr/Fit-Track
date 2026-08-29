@@ -5,13 +5,21 @@ rules_version = '2';
 // Paste these into Firebase console -> Firestore Database -> Rules -> Publish.
 //
 // This matters: a database created in "test mode" allows ANY authenticated
-// user - and after 30 days, no one - to read and write every document. These
-// rules lock each account to its own subtree, so one signed-in user can never
-// read or modify another user's workouts.
+// user - and after 30 days, no one - to read and write every document.
+//
+// Two very different shapes live in here:
+//
+//   users/{uid}/...        private, one owner, nobody else reads it. Ever.
+//   communities/{cid}/...  shared, many writers, membership decides access.
+//
+// The second is why a community can never simply reuse the sync mirror: the
+// mirror is written as whole-list replaces, which is safe only because exactly
+// one device owns it.
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Everything the app writes lives under users/{uid}/...
+    // ------------------------------------------------------ private per-user
+
     match /users/{userId} {
       allow read, write: if isOwner(userId);
 
@@ -20,10 +28,236 @@ service cloud.firestore {
       }
     }
 
+    // ---------------------------------------------------------- communities
+
+    // The community document itself is readable by any signed-in user, because
+    // the directory is public and has to be searchable by name or by id. It
+    // deliberately carries no member data beyond uids -- names, photos and
+    // scores live in subcollections that only members can read.
+    match /communities/{cid} {
+
+      allow read: if signedIn();
+
+      // A creator may only create a community they administer and are the sole
+      // member of. Without this, anyone could seed a group pre-filled with
+      // other people's uids.
+      allow create: if signedIn()
+                    && request.resource.data.adminUid == request.auth.uid
+                    && request.resource.data.memberUids == [request.auth.uid]
+                    && request.resource.data.pendingUids == []
+                    && request.resource.data.bannedUids == []
+                    && request.resource.data.memberCount == 1
+                    && validName(request.resource.data.name)
+                    && validMetric(request.resource.data.metric);
+
+      // Three quite different writers, spelled out separately rather than
+      // folded together: an admin editing the group, a member removing only
+      // themselves, or an outsider adding or withdrawing only their own
+      // pending request.
+      allow update: if isAdminOf(cid) && adminEditIsSane()
+                    || isSelfLeave()
+                    || isSelfRequestChange();
+
+      allow delete: if isAdminOf(cid);
+
+      // ------------------------------------------------------------ members
+
+      // Only members see who else is in the group. The public directory shows
+      // a count, never a roster.
+      match /members/{memberId} {
+        allow read: if isMemberOf(cid);
+        // Membership is granted by the admin approving a request, never by the
+        // joiner. This is the line that makes approval mean something.
+        allow create, update: if isAdminOf(cid);
+        // Leaving is the one thing a member does to their own row. Without
+        // this, someone who left would still appear on the roster.
+        allow delete: if isAdminOf(cid) || isOwner(memberId);
+      }
+
+      // ----------------------------------------------------------- requests
+
+      // A join request is written by the person asking, read only by them and
+      // the admin, and resolved by the admin.
+      match /requests/{requesterId} {
+        allow read: if isAdminOf(cid) || isOwner(requesterId);
+
+        allow create: if isOwner(requesterId)
+                      && request.resource.data.uid == request.auth.uid
+                      // A banned uid cannot ask again. Checked against the
+                      // parent document's list, so removal is not merely
+                      // "removed until they tap join".
+                      && !(request.auth.uid in communityData(cid).bannedUids)
+                      && !(request.auth.uid in communityData(cid).memberUids)
+                      && communityData(cid).memberUids.size() < 50;
+
+        // The requester may withdraw; the admin may reject.
+        allow delete: if isOwner(requesterId) || isAdminOf(cid);
+      }
+
+      // -------------------------------------------------------------- bans
+      // Bans live as an array on the parent document so a rule can check them
+      // without a second read. Nothing to match here.
+
+      // ------------------------------------------------------------- scores
+
+      // Each member publishes their own weekly number and nobody else's. The
+      // value is self-reported, which is a known and accepted trade -- but the
+      // authorship is not forgeable, so nobody can write a score onto someone
+      // else's name.
+      match /scores/{scoreId} {
+        allow read: if isMemberOf(cid);
+        allow create, update: if isMemberOf(cid)
+                              && request.resource.data.uid == request.auth.uid
+                              && scoreId == weekScoreId(request.resource.data.weekId, request.auth.uid)
+                              && request.resource.data.value is number
+                              && request.resource.data.value >= 0;
+        // Cleared when someone leaves or is removed.
+        allow delete: if isAdminOf(cid) || isOwner(resource.data.uid);
+      }
+
+      // -------------------------------------------------------------- posts
+
+      match /posts/{postId} {
+        allow read: if isMemberOf(cid);
+
+        allow create: if isMemberOf(cid)
+                      && request.resource.data.authorUid == request.auth.uid
+                      && request.resource.data.text is string
+                      && request.resource.data.text.size() > 0
+                      && request.resource.data.text.size() <= 500;
+
+        // The only field a non-author may touch is the tally block. Counts are
+        // incremented, so two people reacting at once cannot lose each other's
+        // vote. A member could inflate a count by writing directly; that is the
+        // same accepted trade as a self-reported score.
+        allow update: if isMemberOf(cid)
+                      && request.resource.data.diff(resource.data)
+                           .affectedKeys().hasOnly(['reactionCounts', 'commentCount']);
+
+        allow delete: if isAdminOf(cid) || isOwner(resource.data.authorUid);
+
+        // --------------------------------------------------------- reactions
+
+        // One document per person per post, which is what makes "did I react?"
+        // answerable without reading everybody's.
+        match /reactions/{reactorId} {
+          allow read: if isMemberOf(cid);
+          allow write: if isMemberOf(cid) && isOwner(reactorId);
+        }
+
+        // ---------------------------------------------------------- comments
+
+        match /comments/{commentId} {
+          allow read: if isMemberOf(cid);
+          allow create: if isMemberOf(cid)
+                        && request.resource.data.authorUid == request.auth.uid
+                        && request.resource.data.text is string
+                        && request.resource.data.text.size() > 0
+                        && request.resource.data.text.size() <= 300;
+          // No edits: a comment that can change after people reply to it is a
+          // small trust problem for no real gain.
+          allow update: if false;
+          allow delete: if isAdminOf(cid) || isOwner(resource.data.authorUid);
+        }
+      }
+    }
+
+    // ------------------------------------------------- reactions, by group
+
+    // A collection group query, so one read fetches everything this user has
+    // reacted to across a whole community instead of one read per post on every
+    // page of the feed. Scoped to the caller's own documents, which is why it
+    // is safe to open across the whole tree.
+    match /{path=**}/reactions/{reactorId} {
+      allow read: if isOwner(reactorId);
+    }
+
     // Anything not matched above is denied by default.
 
+    // ------------------------------------------------------------- helpers
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
     function isOwner(userId) {
-      return request.auth != null && request.auth.uid == userId;
+      return signedIn() && request.auth.uid == userId;
+    }
+
+    function communityData(cid) {
+      return get(/databases/$(database)/documents/communities/$(cid)).data;
+    }
+
+    function isMemberOf(cid) {
+      return signedIn() && request.auth.uid in communityData(cid).memberUids;
+    }
+
+    function isAdminOf(cid) {
+      return signedIn() && request.auth.uid == communityData(cid).adminUid;
+    }
+
+    /**
+     * A member may edit the community document only to take themselves out of
+     * it, and to change nothing else in the same write.
+     */
+    function isSelfLeave() {
+      return signedIn()
+             && request.auth.uid in resource.data.memberUids
+             // The admin is deliberately excluded: they must hand over or
+             // delete, so a group is never left without one.
+             && request.auth.uid != resource.data.adminUid
+             && request.resource.data.memberUids == resource.data.memberUids.removeAll([request.auth.uid])
+             // The count is what the public directory sorts on, so it has to
+             // move with the list. Allowing only the list would leave every
+             // departure inflating the number for ever.
+             && request.resource.data.memberCount == request.resource.data.memberUids.size()
+             && request.resource.data.diff(resource.data)
+                  .affectedKeys().hasOnly(['memberUids', 'memberCount']);
+    }
+
+    /**
+     * An outsider may add or withdraw their own pending request, and touch
+     * nothing else.
+     *
+     * The pending list lives on the community document rather than being
+     * derived from the requests subcollection purely so the directory screen
+     * can show "requested" on twenty communities without twenty extra reads.
+     */
+    function isSelfRequestChange() {
+      return signedIn()
+             && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['pendingUids'])
+             && !(request.auth.uid in resource.data.bannedUids)
+             && !(request.auth.uid in resource.data.memberUids)
+             && (
+                  request.resource.data.pendingUids == resource.data.pendingUids.concat([request.auth.uid])
+                  || request.resource.data.pendingUids == resource.data.pendingUids.removeAll([request.auth.uid])
+                );
+    }
+
+    /**
+     * An admin can do most things, but not silently hand the group to a
+     * stranger or ban someone who was never here.
+     */
+    function adminEditIsSane() {
+      return request.resource.data.adminUid in request.resource.data.memberUids
+             && validName(request.resource.data.name)
+             && validMetric(request.resource.data.metric)
+             && request.resource.data.memberCount == request.resource.data.memberUids.size()
+             && request.resource.data.memberUids.size() <= 50;
+    }
+
+    function validName(name) {
+      return name is string && name.size() >= 3 && name.size() <= 40;
+    }
+
+    function validMetric(metric) {
+      return metric in ['steps', 'minutes', 'calories', 'workouts'];
+    }
+
+    /** Score documents are keyed by week and author, so one person cannot
+        stack several entries onto the same week. */
+    function weekScoreId(weekId, uid) {
+      return weekId + '_' + uid;
     }
   }
 }

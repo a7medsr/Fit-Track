@@ -10,6 +10,7 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.UserProfileChangeRequest
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -34,10 +35,39 @@ class AuthRepositoryImpl @Inject constructor(
         awaitClose { firebaseAuth.removeAuthStateListener(listener) }
     }
 
-    override suspend fun signUpWithEmail(email: String, password: String): AuthOutcome =
-        runAuth {
-            firebaseAuth.createUserWithEmailAndPassword(email.trim(), password).await().user
-        }
+    override suspend fun signUpWithEmail(
+        email: String,
+        password: String,
+        displayName: String
+    ): AuthOutcome = runAuth {
+        val user = firebaseAuth.createUserWithEmailAndPassword(email.trim(), password)
+            .await().user
+        // Stored on the Firebase account rather than in local preferences, so
+        // the name follows the user to every device without needing to be
+        // synced, and is already present the first time they open a community.
+        user?.updateProfile(
+            UserProfileChangeRequest.Builder()
+                .setDisplayName(displayName.trim())
+                .build()
+        )?.await()
+        // reload() so the in-memory user carries the name the very next time it
+        // is read; without it currentUser.displayName stays null until the
+        // token is refreshed, and the first community post goes out unnamed.
+        user?.reload()?.await()
+        firebaseAuth.currentUser ?: user
+    }
+
+    override suspend fun updateDisplayName(displayName: String): AuthOutcome = runAuth {
+        val user = firebaseAuth.currentUser
+            ?: throw IllegalStateException("Sign in before changing your name.")
+        user.updateProfile(
+            UserProfileChangeRequest.Builder()
+                .setDisplayName(displayName.trim())
+                .build()
+        ).await()
+        user.reload().await()
+        firebaseAuth.currentUser ?: user
+    }
 
     override suspend fun signInWithEmail(email: String, password: String): AuthOutcome =
         runAuth {
@@ -72,7 +102,7 @@ class AuthRepositoryImpl @Inject constructor(
         firebaseAuth.signOut()
     }
 
-    private inline fun runAuth(block: () -> FirebaseUser?): AuthOutcome =
+    private suspend inline fun runAuth(block: suspend () -> FirebaseUser?): AuthOutcome =
         try {
             val user = block()
             if (user == null) {
@@ -84,10 +114,15 @@ class AuthRepositoryImpl @Inject constructor(
             AuthOutcome.Failure(e.toMessage())
         }
 
+    /**
+     * No email fallback for the name. The part of an address before the @ is
+     * usually a real name or a handle the user did not agree to publish, and
+     * this value ends up on posts other people can read.
+     */
     private fun FirebaseUser.toAuthUser() = AuthUser(
         uid = uid,
         email = email,
-        displayName = displayName ?: email?.substringBefore('@')
+        displayName = displayName?.trim()?.takeIf { it.isNotEmpty() }
     )
 
     /**

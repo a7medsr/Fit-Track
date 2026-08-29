@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_base"
@@ -48,11 +49,59 @@
                 android:text="@string/auth_subtitle_sign_in"
                 android:textAppearance="@style/TextAppearance.FitTrack.Caption" />
 
+            <!-- Shown only when creating an account. The name goes on posts
+                 other people read, so it is collected up front rather than
+                 falling back to the email address. -->
+            <LinearLayout
+                android:id="@+id/nameRow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_xl"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <EditText
+                    android:id="@+id/firstNameInput"
+                    style="@style/Widget.FitTrack.Input"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="@dimen/button_height"
+                    android:layout_marginEnd="@dimen/space_sm"
+                    android:paddingHorizontal="@dimen/space_lg"
+                    android:paddingVertical="0dp"
+                    android:gravity="center_vertical"
+                    android:hint="@string/auth_first_name_hint"
+                    android:inputType="textPersonName|textCapWords"
+                    android:autofillHints="personGivenName"
+                    android:maxLength="30"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/lastNameInput"
+                    style="@style/Widget.FitTrack.Input"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="@dimen/button_height"
+                    android:paddingHorizontal="@dimen/space_lg"
+                    android:paddingVertical="0dp"
+                    android:gravity="center_vertical"
+                    android:hint="@string/auth_last_name_hint"
+                    android:inputType="textPersonName|textCapWords"
+                    android:autofillHints="personFamilyName"
+                    android:maxLength="30"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
             <EditText
                 android:id="@+id/emailInput"
                 style="@style/Widget.FitTrack.Input"
                 android:layout_height="@dimen/button_height"
-                android:layout_marginTop="@dimen/space_xl"
+                android:layout_marginTop="@dimen/space_md"
                 android:paddingHorizontal="@dimen/space_lg"
                 android:paddingVertical="0dp"
                 android:gravity="center_vertical"

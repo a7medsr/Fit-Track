@@ -9,11 +9,12 @@ import androidx.core.content.ContextCompat
 import com.example.fittrack.MainActivity
 import com.example.fittrack.R
 import com.example.fittrack.ui.charts.ChartsActivity
+import com.example.fittrack.ui.community.CommunityHubActivity
 import com.example.fittrack.ui.records.RecordsActivity
 import com.example.fittrack.ui.logworkout.LogWorkoutActivity
 import com.example.fittrack.ui.history.HistoryActivity
 
-enum class NavTab { HOME, HISTORY, LOG, CHARTS, RECORDS }
+enum class NavTab { HOME, HISTORY, LOG, CHARTS, RECORDS, COMMUNITY }
 
 object NavBarHelper {
 
@@ -53,6 +54,11 @@ object NavBarHelper {
                 activity.findViewById(R.id.navRecords),
                 activity.findViewById(R.id.navRecordsIcon),
                 activity.findViewById(R.id.navRecordsLabel)
+            ),
+            NavTab.COMMUNITY to TabViews(
+                activity.findViewById(R.id.navCommunity),
+                activity.findViewById(R.id.navCommunityIcon),
+                activity.findViewById(R.id.navCommunityLabel)
             )
         )
 
@@ -95,6 +101,7 @@ object NavBarHelper {
         NavTab.HISTORY to HistoryActivity::class.java,
         NavTab.LOG to LogWorkoutActivity::class.java,
         NavTab.CHARTS to ChartsActivity::class.java,
-        NavTab.RECORDS to RecordsActivity::class.java
+        NavTab.RECORDS to RecordsActivity::class.java,
+        NavTab.COMMUNITY to CommunityHubActivity::class.java
     )
 }

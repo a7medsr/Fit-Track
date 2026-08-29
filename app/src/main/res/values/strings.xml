@@ -276,4 +276,120 @@
         <item quantity="other">%d exercises</item>
     </plurals>
 
+    <!-- ============================ Community ============================ -->
+
+    <string name="action_delete">Delete</string>
+    <string name="action_ok">OK</string>
+    <string name="action_retry">Try again</string>
+
+    <string name="nav_community">Community</string>
+    <string name="community_title">Community</string>
+    <string name="community_create_title">New community</string>
+    <string name="community_manage_title">Manage</string>
+    <string name="community_post_title">New post</string>
+    <string name="community_comments_title">Comments</string>
+
+    <string name="community_search_hint">Search by name or code</string>
+    <string name="community_meta">%1$d members · %2$s</string>
+    <string name="community_you">%1$s (you)</string>
+
+    <string name="community_action_open">Open</string>
+    <string name="community_action_join">Join</string>
+    <string name="community_action_request">Send request</string>
+    <string name="community_action_pending">Requested</string>
+    <string name="community_action_removed">Removed</string>
+    <string name="community_action_create">Create community</string>
+    <string name="community_action_manage">Manage</string>
+    <string name="community_action_new_post">New post</string>
+    <string name="community_action_post">Post</string>
+    <string name="community_action_approve">Approve</string>
+    <string name="community_action_reject">Reject</string>
+    <string name="community_action_remove">Remove</string>
+    <string name="community_action_unban">Allow back</string>
+    <string name="community_action_make_admin">Make admin</string>
+    <string name="community_action_delete">Delete community</string>
+    <string name="community_role_admin">Admin</string>
+
+    <string name="community_creating">Creating…</string>
+    <string name="community_posting">Posting…</string>
+    <string name="community_uploading">Uploading photo…</string>
+    <string name="community_posted">Posted.</string>
+
+    <string name="community_empty">Nothing here yet.</string>
+    <string name="community_signed_out">Sign in to join a community.</string>
+    <string name="community_name_prompt_title">What should we call you?</string>
+    <string name="community_name_prompt_body">Other members see this on your posts and on the leaderboard. Your email address is never shown.</string>
+    <string name="community_name_prompt_save">Save</string>
+    <string name="community_name_prompt_error">Enter both a first and a last name.</string>
+    <string name="community_feed_empty">No posts yet. Be the first.</string>
+    <string name="community_board_empty">No scores this week yet.</string>
+    <string name="community_comments_empty">No comments yet.</string>
+    <string name="community_no_longer_member">You are no longer in that community.</string>
+
+    <string name="community_join_title">Join %1$s?</string>
+    <string name="community_join_body">The admin has to approve you. Once you are in, other members can see your name, your photo and your weekly total.</string>
+    <string name="community_leave_title">Leave %1$s?</string>
+    <string name="community_leave_body">Your posts and comments stay. You can ask to join again later.</string>
+    <string name="community_remove_title">Remove %1$s?</string>
+    <string name="community_remove_body">They lose access straight away and cannot request to join again unless you allow them back. Their posts and comments stay.</string>
+    <string name="community_transfer_title">Make %1$s the admin?</string>
+    <string name="community_transfer_body">They take over the community and you become an ordinary member. You cannot undo this yourself.</string>
+    <string name="community_delete_confirm">This deletes every post, comment and photo, for everyone, and cannot be undone. Type %1$s to confirm.</string>
+    <string name="community_delete_mismatch">That code did not match. Nothing was deleted.</string>
+    <string name="community_delete_post_confirm">Delete this post? Its comments and photo go too.</string>
+    <string name="community_delete_comment_confirm">Delete this comment?</string>
+
+    <string name="community_menu_share_code">Share the code</string>
+    <string name="community_menu_manage">Manage community</string>
+    <string name="community_menu_leave">Leave community</string>
+    <string name="community_code_body">Anyone with this code can find the community and ask to join:
+
+%1$s</string>
+    <string name="community_created_title">%1$s is live</string>
+    <string name="community_created_body">Share this code so people can find it and ask to join:
+
+%1$s</string>
+
+    <string name="community_tab_feed">Feed</string>
+    <string name="community_tab_board">Leaderboard</string>
+    <string name="community_board_week">%1$s · %2$s</string>
+    <string name="community_last_week">Last week: %1$s, %2$s %3$s</string>
+    <string name="community_metric_value">%1$s %2$s</string>
+
+    <string name="community_icon_label">Icon</string>
+    <string name="community_name_label">Name</string>
+    <string name="community_name_hint">Morning Runners</string>
+    <string name="community_description_label">Description</string>
+    <string name="community_description_hint">What is this group for?</string>
+    <string name="community_metric_label">Leaderboard</string>
+    <string name="community_metric_explainer">What the weekly board ranks on. You can change it later.</string>
+    <string name="community_metric_change_warning">Changing this switches the board immediately. Everyone else’s total is recalculated the next time they open the app, so it looks incomplete for a while.</string>
+    <string name="community_metric_steps_help">Total steps this week.</string>
+    <string name="community_metric_minutes_help">Total logged workout time this week.</string>
+    <string name="community_metric_calories_help">Workouts plus walking, this week.</string>
+    <string name="community_metric_workouts_help">How many sessions were logged this week.</string>
+
+    <string name="community_section_requests">Waiting to join</string>
+    <string name="community_section_members">Members</string>
+    <string name="community_section_banned">Removed</string>
+    <string name="community_section_metric">Leaderboard metric</string>
+    <string name="community_banned_row">Removed member %1$s…</string>
+
+    <string name="community_post_hint">How did training go?</string>
+    <string name="community_counter">%1$d / %2$d</string>
+    <string name="community_add_photo">Add a photo</string>
+    <string name="community_change_photo">Change photo</string>
+    <string name="community_comment_hint">Write a comment</string>
+    <string name="community_comment_none">Add a comment</string>
+    <string name="community_comment_one">1 comment</string>
+    <string name="community_comment_many">%1$d comments</string>
+
+    <string name="auth_first_name_hint">First name</string>
+    <string name="auth_last_name_hint">Last name</string>
+
+    <string name="cd_create_community">Create a community</string>
+    <string name="cd_post_photo">Photo attached to this post</string>
+    <string name="cd_remove_photo">Remove photo</string>
+    <string name="cd_send_comment">Send comment</string>
+
 </resources>

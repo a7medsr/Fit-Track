@@ -57,6 +57,28 @@
             android:name=".ui.chat.ChatActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".ui.community.CommunityHubActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".ui.community.CommunityDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.community.CreateCommunityActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".ui.community.PostComposerActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".ui.community.CommentsActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".ui.community.ManageCommunityActivity"
+            android:exported="false" />
     </application>
 
 

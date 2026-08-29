@@ -3,9 +3,8 @@ package com.example.fittrack.data.avatar
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.Matrix
 import android.net.Uri
-import androidx.exifinterface.media.ExifInterface
+import com.example.fittrack.data.media.ImagePipeline
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
 import javax.inject.Inject
@@ -50,9 +49,9 @@ class AvatarStore @Inject constructor(
     }
 
     private fun importOrThrow(uri: Uri, userId: String): File? {
-        val source = decodeDownscaled(uri) ?: return null
-        val upright = applyOrientation(uri, source)
-        val square = cropToSquare(upright)
+        val source = ImagePipeline.decodeDownscaled(context, uri, TARGET_PX) ?: return null
+        val upright = ImagePipeline.applyOrientation(context, uri, source)
+        val square = ImagePipeline.cropToSquare(upright)
         val scaled = if (square.width > TARGET_PX) {
             Bitmap.createScaledBitmap(square, TARGET_PX, TARGET_PX, true)
         } else {
@@ -64,9 +63,11 @@ class AvatarStore @Inject constructor(
             scaled.compress(Bitmap.CompressFormat.JPEG, JPEG_QUALITY, out)
         }
 
-        if (scaled !== square) scaled.recycle()
-        if (square !== upright) square.recycle()
-        if (upright !== source) upright.recycle()
+        with(ImagePipeline) {
+            scaled.recycleUnless(square)
+            square.recycleUnless(upright)
+            upright.recycleUnless(source)
+        }
         source.recycle()
 
         return target.takeIf { it.length() > 0 }
@@ -83,61 +84,6 @@ class AvatarStore @Inject constructor(
     fun loadBitmap(userId: String): Bitmap? {
         val file = existingFor(userId) ?: return null
         return runCatching { BitmapFactory.decodeFile(file.absolutePath) }.getOrNull()
-    }
-
-    /**
-     * Two passes: measure first, then decode with inSampleSize, so a 12 MP
-     * photo never lands in memory at full size just to be shrunk.
-     */
-    private fun decodeDownscaled(uri: Uri): Bitmap? {
-        val bounds = BitmapFactory.Options().apply { inJustDecodeBounds = true }
-        // decodeStream returns null on purpose in bounds-only mode, so success
-        // is judged by outWidth. Treating that null as failure is what makes an
-        // otherwise fine image look unreadable.
-        val boundsStream = context.contentResolver.openInputStream(uri) ?: return null
-        boundsStream.use { BitmapFactory.decodeStream(it, null, bounds) }
-        if (bounds.outWidth <= 0 || bounds.outHeight <= 0) return null
-
-        var sample = 1
-        while (bounds.outWidth / sample > TARGET_PX * 2 && bounds.outHeight / sample > TARGET_PX * 2) {
-            sample *= 2
-        }
-
-        val options = BitmapFactory.Options().apply { inSampleSize = sample }
-        val pixelStream = context.contentResolver.openInputStream(uri) ?: return null
-        return pixelStream.use { BitmapFactory.decodeStream(it, null, options) }
-    }
-
-    private fun applyOrientation(uri: Uri, bitmap: Bitmap): Bitmap {
-        val orientation = runCatching {
-            context.contentResolver.openInputStream(uri)?.use {
-                ExifInterface(it).getAttributeInt(
-                    ExifInterface.TAG_ORIENTATION,
-                    ExifInterface.ORIENTATION_NORMAL
-                )
-            } ?: ExifInterface.ORIENTATION_NORMAL
-        }.getOrDefault(ExifInterface.ORIENTATION_NORMAL)
-
-        val matrix = Matrix()
-        when (orientation) {
-            ExifInterface.ORIENTATION_ROTATE_90 -> matrix.postRotate(90f)
-            ExifInterface.ORIENTATION_ROTATE_180 -> matrix.postRotate(180f)
-            ExifInterface.ORIENTATION_ROTATE_270 -> matrix.postRotate(270f)
-            ExifInterface.ORIENTATION_FLIP_HORIZONTAL -> matrix.postScale(-1f, 1f)
-            ExifInterface.ORIENTATION_FLIP_VERTICAL -> matrix.postScale(1f, -1f)
-            else -> return bitmap
-        }
-        return runCatching {
-            Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
-        }.getOrDefault(bitmap)
-    }
-
-    private fun cropToSquare(bitmap: Bitmap): Bitmap {
-        val side = minOf(bitmap.width, bitmap.height)
-        if (bitmap.width == bitmap.height) return bitmap
-        val x = (bitmap.width - side) / 2
-        val y = (bitmap.height - side) / 2
-        return runCatching { Bitmap.createBitmap(bitmap, x, y, side, side) }.getOrDefault(bitmap)
     }
 
     /** A uid is used in a filename, so anything path-like is stripped. */
