@@ -54,25 +54,38 @@ class SignInViewModel @Inject constructor(
         )
     }
 
-    fun submitEmail(email: String, password: String) {
+    fun submitEmail(
+        email: String,
+        password: String,
+        firstName: String = "",
+        lastName: String = ""
+    ) {
+        val signingUp = _state.value.mode == AuthMode.SIGN_UP
+
         if (email.isBlank() || password.isBlank()) {
             _state.value = _state.value.copy(error = "Enter your email and password.")
             return
         }
-        if (_state.value.mode == AuthMode.SIGN_UP && password.length < MIN_PASSWORD) {
+        if (signingUp && (firstName.isBlank() || lastName.isBlank())) {
+            _state.value = _state.value.copy(error = "Enter your first and last name.")
+            return
+        }
+        if (signingUp && password.length < MIN_PASSWORD) {
             _state.value = _state.value.copy(
                 error = "Use a password of at least $MIN_PASSWORD characters."
             )
             return
         }
-        run {
-            val mode = _state.value.mode
-            launchAuth {
-                if (mode == AuthMode.SIGN_UP) {
-                    authRepository.signUpWithEmail(email, password)
-                } else {
-                    authRepository.signInWithEmail(email, password)
-                }
+
+        launchAuth {
+            if (signingUp) {
+                authRepository.signUpWithEmail(
+                    email,
+                    password,
+                    "${firstName.trim()} ${lastName.trim()}"
+                )
+            } else {
+                authRepository.signInWithEmail(email, password)
             }
         }
     }

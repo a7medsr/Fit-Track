@@ -15,6 +15,7 @@
         android:name=".FitTrackApp"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:theme="@style/Theme.FitTrack">
         <!-- The launcher is the sign-in gate; it forwards straight to
              MainActivity when a session already exists. -->
@@ -56,6 +57,28 @@
             android:name=".ui.chat.ChatActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".ui.community.CommunityHubActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".ui.community.CommunityDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.community.CreateCommunityActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".ui.community.PostComposerActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".ui.community.CommentsActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".ui.community.ManageCommunityActivity"
+            android:exported="false" />
     </application>
 
 

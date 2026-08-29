@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_base"
+    android:fitsSystemWindows="true">
+
+    <include
+        android:id="@+id/appBar"
+        layout="@layout/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/app_bar_height"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintTop_toBottomOf="@id/appBar"
+        app:layout_constraintBottom_toTopOf="@id/postBtn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/screen_margin">
+
+            <EditText
+                android:id="@+id/postInput"
+                style="@style/Widget.FitTrack.Input"
+                android:layout_marginTop="@dimen/space_lg"
+                android:gravity="top|start"
+                android:minHeight="140dp"
+                android:hint="@string/community_post_hint"
+                android:inputType="textMultiLine|textCapSentences"
+                android:maxLength="500"
+                android:importantForAutofill="no"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/counter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_xs"
+                android:gravity="end"
+                android:textAppearance="@style/TextAppearance.FitTrack.Caption"
+                android:textColor="@color/text_tertiary"
+                tools:text="0 / 500" />
+
+            <FrameLayout
+                android:id="@+id/imageFrame"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_lg"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <ImageView
+                    android:id="@+id/imagePreview"
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp"
+                    android:scaleType="centerCrop"
+                    android:background="@color/surface_variant"
+                    android:contentDescription="@string/cd_post_photo" />
+
+                <ImageView
+                    android:id="@+id/removeImageBtn"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_gravity="top|end"
+                    android:layout_margin="@dimen/space_sm"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_close"
+                    android:background="@drawable/bg_icon_button_ghost"
+                    android:contentDescription="@string/cd_remove_photo"
+                    android:focusable="true"
+                    android:clickable="true" />
+
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/addImageBtn"
+                style="@style/Widget.FitTrack.Button.Secondary"
+                android:layout_marginTop="@dimen/space_lg"
+                android:text="@string/community_add_photo" />
+
+            <TextView
+                android:id="@+id/errorText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_lg"
+                android:textAppearance="@style/TextAppearance.FitTrack.Caption"
+                android:textColor="@color/danger"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <TextView
+        android:id="@+id/postBtn"
+        style="@style/Widget.FitTrack.Button.Primary"
+        android:layout_width="0dp"
+        android:layout_marginHorizontal="@dimen/screen_margin"
+        android:layout_marginBottom="@dimen/space_lg"
+        android:text="@string/community_action_post"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

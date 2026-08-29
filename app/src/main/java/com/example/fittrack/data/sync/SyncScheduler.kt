@@ -44,6 +44,15 @@ class SyncScheduler @Inject constructor(
         if (started) return
         started = true
 
+        // Pull whenever a signed-in user appears -- at sign-in and on every app
+        // start with a restored session. This is what lets a second device see
+        // anything created on the first one.
+        scope.launch {
+            authRepository.observeUser()
+                .filterNotNull()
+                .collect { runCatching { syncRepository.pullRemoteState() } }
+        }
+
         scope.launch {
             authRepository.observeUser()
                 .filterNotNull()

@@ -2,13 +2,17 @@ package com.example.fittrack.di
 
 import com.example.fittrack.data.repository.ExerciseRepositoryImpl
 import com.example.fittrack.data.auth.AuthRepositoryImpl
+import com.example.fittrack.data.avatar.AvatarRepositoryImpl
+import com.example.fittrack.data.community.CommunityRepositoryImpl
 import com.example.fittrack.data.repository.ChatRepositoryImpl
 import com.example.fittrack.data.repository.RoutineRepositoryImpl
 import com.example.fittrack.data.repository.StepRepositoryImpl
 import com.example.fittrack.domain.repository.ExerciseRepository
 import com.example.fittrack.data.sync.SyncRepositoryImpl
 import com.example.fittrack.domain.repository.AuthRepository
+import com.example.fittrack.domain.repository.AvatarRepository
 import com.example.fittrack.domain.repository.ChatRepository
+import com.example.fittrack.domain.repository.CommunityRepository
 import com.example.fittrack.domain.repository.RoutineRepository
 import com.example.fittrack.domain.repository.SyncRepository
 import com.example.fittrack.domain.repository.StepRepository
@@ -43,4 +47,10 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindChatRepository(impl: ChatRepositoryImpl): ChatRepository
+
+    @Binds
+    abstract fun bindAvatarRepository(impl: AvatarRepositoryImpl): AvatarRepository
+
+    @Binds
+    abstract fun bindCommunityRepository(impl: CommunityRepositoryImpl): CommunityRepository
 }

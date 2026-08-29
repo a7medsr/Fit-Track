@@ -40,6 +40,7 @@ android {
         buildConfigField("String", "XAI_API_KEY", "\"${localProps.getProperty("XAI_API_KEY", "")}\"")
         buildConfigField("String", "AI_PROVIDER", "\"${localProps.getProperty("AI_PROVIDER", "gemini")}\"")
         buildConfigField("String", "GEMINI_MODEL", "\"${localProps.getProperty("GEMINI_MODEL", "gemini-flash-lite-latest")}\"")
+        buildConfigField("String", "VPS_BASE_URL", "\"${localProps.getProperty("VPS_BASE_URL", "http://srv1236384.hstgr.cloud/")}\"")
     }
 
     buildFeatures {
@@ -93,6 +94,11 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.retrofit.gson)
     implementation(libs.okhttp)
+    implementation(libs.androidx.exifinterface)
+    // Remote avatars and post photos in scrolling lists. Handles the request
+    // cancellation a RecyclerView needs; a hand-rolled loader shows the wrong
+    // face in a recycled row sooner or later.
+    implementation(libs.coil)
     testImplementation(libs.kotlinx.coroutines.test)
     // Android ships org.json as a stub that throws in JVM unit tests; this puts
     // the real implementation on the test classpath so parsing can be tested.

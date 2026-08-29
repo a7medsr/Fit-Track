@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- One feed post. The image is GONE unless the post has one, so a text-only
+     post takes no more room than it needs. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/space_md"
+    android:orientation="vertical"
+    android:background="@drawable/bg_card"
+    android:padding="@dimen/space_lg">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <!-- Initials sit underneath the photo, so a slow or failed image load
+             never leaves an empty circle. -->
+        <FrameLayout
+            android:layout_width="36dp"
+            android:layout_height="36dp">
+
+            <TextView
+                android:id="@+id/authorInitials"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textSize="13sp"
+                android:fontFamily="sans-serif-medium"
+                android:includeFontPadding="false"
+                tools:text="AS" />
+
+            <ImageView
+                android:id="@+id/authorAvatar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:importantForAccessibility="no" />
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space_md"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/authorName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textAppearance="@style/TextAppearance.FitTrack.Section"
+                android:textSize="15sp"
+                tools:text="Ahmed Samir" />
+
+            <TextView
+                android:id="@+id/postTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.FitTrack.Caption"
+                android:textSize="12sp"
+                tools:text="3h" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/deleteBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:gravity="center"
+            android:paddingHorizontal="@dimen/space_md"
+            android:text="@string/action_delete"
+            android:textColor="@color/danger"
+            android:textSize="13sp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:focusable="true"
+            android:clickable="true"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/postText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_md"
+        android:textAppearance="@style/TextAppearance.FitTrack.Caption"
+        android:textColor="@color/text_primary"
+        android:textSize="15sp"
+        android:lineSpacingExtra="2dp"
+        tools:text="Managed 8km before work this morning." />
+
+    <ImageView
+        android:id="@+id/postImage"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:layout_marginTop="@dimen/space_md"
+        android:scaleType="centerCrop"
+        android:background="@color/surface_variant"
+        android:contentDescription="@string/cd_post_photo"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+    <LinearLayout
+        android:id="@+id/reactionRow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_md"
+        android:orientation="horizontal"
+        android:gravity="center_vertical" />
+
+    <TextView
+        android:id="@+id/commentBtn"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="@dimen/space_sm"
+        android:gravity="center_vertical"
+        android:textAppearance="@style/TextAppearance.FitTrack.Caption"
+        android:background="?attr/selectableItemBackground"
+        android:focusable="true"
+        android:clickable="true"
+        tools:text="2 comments" />
+
+</LinearLayout>

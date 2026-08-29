@@ -1,0 +1,14 @@
+{
+  "name": "fittrack-avatar-service",
+  "version": "1.0.0",
+  "private": true,
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": { "start": "node server.js" },
+  "dependencies": {
+    "express": "^4.21.2",
+    "multer": "^2.3.0",
+    "sharp": "^0.33.5",
+    "firebase-admin": "^13.0.2"
+  }
+}

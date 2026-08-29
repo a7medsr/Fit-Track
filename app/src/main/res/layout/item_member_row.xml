@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- A person plus one or two actions. Shared by the requests, members and
+     banned sections; the buttons are labelled and hidden per section. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/space_sm"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:background="@drawable/bg_card"
+    android:padding="@dimen/space_md">
+
+    <FrameLayout
+        android:layout_width="36dp"
+        android:layout_height="36dp">
+
+        <TextView
+            android:id="@+id/rowInitials"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            android:fontFamily="sans-serif-medium"
+            android:includeFontPadding="false"
+            tools:text="AS" />
+
+        <ImageView
+            android:id="@+id/rowAvatar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:importantForAccessibility="no" />
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/space_md"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/rowName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textAppearance="@style/TextAppearance.FitTrack.Section"
+            android:textSize="15sp"
+            tools:text="Ahmed Samir" />
+
+        <TextView
+            android:id="@+id/rowMeta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.FitTrack.Caption"
+            android:textSize="12sp"
+            android:textColor="@color/text_tertiary"
+            android:visibility="gone"
+            tools:text="Admin"
+            tools:visibility="visible" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/rowPrimaryBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="34dp"
+        android:layout_marginStart="@dimen/space_sm"
+        android:gravity="center"
+        android:paddingHorizontal="@dimen/space_md"
+        android:background="@drawable/bg_chip_selected"
+        android:textColor="@color/brand_bright"
+        android:textSize="13sp"
+        android:fontFamily="sans-serif-medium"
+        android:focusable="true"
+        android:clickable="true"
+        android:visibility="gone"
+        tools:text="Approve"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/rowSecondaryBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="34dp"
+        android:layout_marginStart="@dimen/space_sm"
+        android:gravity="center"
+        android:paddingHorizontal="@dimen/space_md"
+        android:background="@drawable/bg_chip_unselected"
+        android:textColor="@color/danger"
+        android:textSize="13sp"
+        android:fontFamily="sans-serif-medium"
+        android:focusable="true"
+        android:clickable="true"
+        android:visibility="gone"
+        tools:text="Reject"
+        tools:visibility="visible" />
+
+</LinearLayout>

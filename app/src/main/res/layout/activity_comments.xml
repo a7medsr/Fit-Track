@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_base"
+    android:fitsSystemWindows="true">
+
+    <include
+        android:id="@+id/appBar"
+        layout="@layout/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/app_bar_height"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/commentList"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:paddingHorizontal="@dimen/screen_margin"
+        android:paddingBottom="@dimen/space_md"
+        app:layout_constraintTop_toBottomOf="@id/appBar"
+        app:layout_constraintBottom_toTopOf="@id/composeRow"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:listitem="@layout/item_comment" />
+
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminateTint="@color/brand_bright"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="@id/commentList"
+        app:layout_constraintBottom_toBottomOf="@id/commentList"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/emptyText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingHorizontal="@dimen/space_xxl"
+        android:text="@string/community_comments_empty"
+        android:textAppearance="@style/TextAppearance.FitTrack.Caption"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="@id/commentList"
+        app:layout_constraintBottom_toBottomOf="@id/commentList"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:visibility="visible" />
+
+    <LinearLayout
+        android:id="@+id/composeRow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="bottom"
+        android:paddingHorizontal="@dimen/screen_margin"
+        android:paddingVertical="@dimen/space_md"
+        android:background="@color/surface"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <EditText
+            android:id="@+id/commentInput"
+            style="@style/Widget.FitTrack.Input"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/touch_target"
+            android:paddingHorizontal="@dimen/space_md"
+            android:paddingVertical="@dimen/space_md"
+            android:gravity="center_vertical"
+            android:hint="@string/community_comment_hint"
+            android:inputType="textMultiLine|textCapSentences"
+            android:maxLength="300"
+            android:maxLines="4"
+            android:importantForAutofill="no"
+            android:textSize="15sp" />
+
+        <ImageView
+            android:id="@+id/sendBtn"
+            android:layout_width="@dimen/touch_target"
+            android:layout_height="@dimen/touch_target"
+            android:layout_marginStart="@dimen/space_sm"
+            android:padding="12dp"
+            android:src="@drawable/ic_send"
+            android:background="@drawable/bg_icon_button_brand"
+            android:contentDescription="@string/cd_send_comment"
+            android:focusable="true"
+            android:clickable="true" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

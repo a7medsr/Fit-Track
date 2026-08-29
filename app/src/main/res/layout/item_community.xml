@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- One community in the hub list: emoji, name, member count and metric, and
+     a single action whose label changes with the viewer's relationship to it. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/space_sm"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:background="@drawable/bg_card_clickable"
+    android:padding="@dimen/space_lg"
+    android:focusable="true"
+    android:clickable="true">
+
+    <TextView
+        android:id="@+id/communityIcon"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:gravity="center"
+        android:background="@drawable/bg_icon_circle"
+        android:textSize="20sp"
+        android:includeFontPadding="false"
+        tools:text="🏋️" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/space_md"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/communityName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textAppearance="@style/TextAppearance.FitTrack.Section"
+            tools:text="Morning Runners" />
+
+        <TextView
+            android:id="@+id/communityMeta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textAppearance="@style/TextAppearance.FitTrack.Caption"
+            tools:text="12 members · Steps" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/communityAction"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:layout_marginStart="@dimen/space_sm"
+        android:gravity="center"
+        android:paddingHorizontal="@dimen/space_md"
+        android:background="@drawable/bg_chip_selected"
+        android:textColor="@color/brand_bright"
+        android:textSize="13sp"
+        android:fontFamily="sans-serif-medium"
+        android:focusable="true"
+        android:clickable="true"
+        tools:text="Join" />
+
+</LinearLayout>

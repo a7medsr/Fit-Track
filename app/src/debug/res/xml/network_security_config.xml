@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  DEBUG ONLY. This file replaces the main one in debug builds.
+
+  It allows plain HTTP to the VPS so the avatar upload can be tested before the
+  certificate exists. It is scoped to that one host, so everything else still
+  requires HTTPS, and it never reaches a release build.
+
+  Delete the domain entry once certbot has issued a certificate.
+-->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="false" />
+
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">srv1236384.hstgr.cloud</domain>
+        <domain includeSubdomains="true">tecisfun.cloud</domain>
+        <!-- Same box as the hostname above; both are allowed so the base
+             URL can be either while testing. -->
+        <domain includeSubdomains="false">147.93.55.224</domain>
+        <domain includeSubdomains="true">10.0.2.2</domain>
+    </domain-config>
+</network-security-config>

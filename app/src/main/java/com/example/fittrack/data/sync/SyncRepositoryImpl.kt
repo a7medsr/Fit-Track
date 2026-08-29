@@ -22,6 +22,9 @@ import com.example.fittrack.data.remote.RemoteWorkout
 import com.example.fittrack.domain.repository.AuthRepository
 import com.example.fittrack.domain.repository.SyncRepository
 import com.example.fittrack.domain.repository.SyncResult
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -44,12 +47,28 @@ class SyncRepositoryImpl @Inject constructor(
     private val goalPreferences: GoalPreferences
 ) : SyncRepository {
 
+    private val _lastPullAt = MutableStateFlow(0L)
+    override val lastPullAt: StateFlow<Long> = _lastPullAt.asStateFlow()
+
+    override suspend fun pullRemoteState(): SyncResult {
+        val uid = authRepository.currentUser?.uid ?: return SyncResult.NotSignedIn
+        return try {
+            val cloud = remote.pull(uid)
+            val pulled = if (cloud.isEmpty) 0 else applyRemote(cloud, uid)
+            _lastPullAt.value = System.currentTimeMillis()
+            SyncResult.Success(pulled = pulled, pushed = 0)
+        } catch (e: Exception) {
+            SyncResult.Failure(e.message ?: "Sync failed")
+        }
+    }
+
     override suspend fun syncOnSignIn(): SyncResult {
         val uid = authRepository.currentUser?.uid ?: return SyncResult.NotSignedIn
         return try {
             val cloud = remote.pull(uid)
-            val pulled = if (cloud.isEmpty) 0 else applyRemote(cloud)
-            val local = collectLocal()
+            val pulled = if (cloud.isEmpty) 0 else applyRemote(cloud, uid)
+            _lastPullAt.value = System.currentTimeMillis()
+            val local = collectLocal(uid)
             remote.push(uid, local)
             SyncResult.Success(pulled = pulled, pushed = local.workouts.size)
         } catch (e: Exception) {
@@ -60,7 +79,7 @@ class SyncRepositoryImpl @Inject constructor(
     override suspend fun pushLocalState(): SyncResult {
         val uid = authRepository.currentUser?.uid ?: return SyncResult.NotSignedIn
         return try {
-            val local = collectLocal()
+            val local = collectLocal(uid)
             remote.push(uid, local)
             SyncResult.Success(pulled = 0, pushed = local.workouts.size)
         } catch (e: Exception) {
@@ -71,7 +90,7 @@ class SyncRepositoryImpl @Inject constructor(
     // ---------------------------------------------------------------- pull
 
     /** Returns how many records were new to this device. */
-    private suspend fun applyRemote(cloud: RemoteSnapshot): Int {
+    private suspend fun applyRemote(cloud: RemoteSnapshot, uid: String): Int {
         var added = 0
 
         val knownWorkouts = workoutDao.getAllSyncIds().toSet()
@@ -122,6 +141,11 @@ class SyncRepositoryImpl @Inject constructor(
         cloud.profile?.let { profile ->
             if (profile.weightKg > 0) userPreferences.setWeightKg(profile.weightKg)
             if (profile.dailyGoal > 0) goalPreferences.setGoal(profile.dailyGoal)
+            // A second device learns where the picture is from here, then
+            // downloads it into its own local cache on next launch.
+            if (!profile.avatarUrl.isNullOrBlank()) {
+                userPreferences.setAvatarUrl(uid, profile.avatarUrl)
+            }
         }
 
         return added
@@ -204,7 +228,7 @@ class SyncRepositoryImpl @Inject constructor(
 
     // ---------------------------------------------------------------- push
 
-    private suspend fun collectLocal(): RemoteSnapshot {
+    private suspend fun collectLocal(uid: String): RemoteSnapshot {
         val exercises = exerciseDao.getAllOnce()
         val byId = exercises.associateBy { it.id }
 
@@ -261,7 +285,10 @@ class SyncRepositoryImpl @Inject constructor(
             steps = stepDao.getAllOnce().map { RemoteStepDay(it.date, it.stepCount) },
             profile = RemoteProfile(
                 weightKg = userPreferences.getWeightKg(),
-                dailyGoal = goalPreferences.getGoal()
+                dailyGoal = goalPreferences.getGoal(),
+                // Only the URL travels. The image itself lives in a folder on
+                // the VPS; Firestore never carries the bytes.
+                avatarUrl = userPreferences.getAvatarUrl(uid)
             )
         )
     }

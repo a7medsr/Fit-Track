@@ -63,7 +63,9 @@ data class RemoteStepDay(
 
 data class RemoteProfile(
     val weightKg: Int = 0,
-    val dailyGoal: Int = 0
+    val dailyGoal: Int = 0,
+    /** Where the picture lives on the VPS; the image itself is never in Firestore. */
+    val avatarUrl: String? = null
 )
 
 /** One pull of everything the account has stored. */

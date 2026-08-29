@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- One comment. Flat: no replies, so there is no indentation to manage. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/space_md"
+    android:orientation="horizontal"
+    android:baselineAligned="false">
+
+    <FrameLayout
+        android:layout_width="32dp"
+        android:layout_height="32dp">
+
+        <TextView
+            android:id="@+id/commentInitials"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:fontFamily="sans-serif-medium"
+            android:includeFontPadding="false"
+            tools:text="AS" />
+
+        <ImageView
+            android:id="@+id/commentAvatar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:importantForAccessibility="no" />
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/space_md"
+        android:orientation="vertical"
+        android:background="@drawable/bg_bubble_assistant"
+        android:padding="@dimen/space_md">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/commentAuthor"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textColor="@color/text_primary"
+                android:textSize="13sp"
+                android:fontFamily="sans-serif-medium"
+                tools:text="Ahmed Samir" />
+
+            <TextView
+                android:id="@+id/commentTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_sm"
+                android:textColor="@color/text_tertiary"
+                android:textSize="11sp"
+                tools:text="2h" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/commentText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:textColor="@color/text_primary"
+            android:textSize="14sp"
+            android:lineSpacingExtra="1dp"
+            tools:text="Strong work." />
+
+    </LinearLayout>
+
+</LinearLayout>

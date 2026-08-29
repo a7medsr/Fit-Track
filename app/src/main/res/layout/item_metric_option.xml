@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- One selectable leaderboard metric. The background is swapped in code to
+     show which is chosen, so no selector drawable is needed. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/space_sm"
+    android:orientation="vertical"
+    android:background="@drawable/bg_card"
+    android:padding="@dimen/space_lg"
+    android:focusable="true"
+    android:clickable="true">
+
+    <TextView
+        android:id="@+id/metricName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.FitTrack.Section"
+        tools:text="Steps" />
+
+    <TextView
+        android:id="@+id/metricDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:textAppearance="@style/TextAppearance.FitTrack.Caption"
+        tools:text="Total steps this week." />
+
+</LinearLayout>
