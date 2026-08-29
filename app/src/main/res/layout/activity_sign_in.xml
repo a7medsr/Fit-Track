@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  Google is the only way in. There is no password field because there is no
+  password: the account is whatever Google says it is, which is also what makes
+  the email address on a community post a verified one rather than something
+  anybody could type.
+-->
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -11,26 +17,27 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:clipToPadding="false"
-        android:scrollbars="none"
+        android:fillViewport="true"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:gravity="center_vertical"
+            android:minHeight="600dp"
             android:paddingHorizontal="@dimen/screen_margin"
-            android:paddingTop="@dimen/space_xxl"
-            android:paddingBottom="@dimen/content_bottom_padding">
+            android:paddingVertical="@dimen/space_xxl">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space_xxl"
                 android:text="@string/app_name"
-                android:textAppearance="@style/TextAppearance.FitTrack.Display"
                 android:textSize="36sp"
+                android:textStyle="bold"
                 android:textColor="@color/brand_bright" />
 
             <TextView
@@ -38,7 +45,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space_xl"
-                android:text="@string/auth_title_sign_in"
+                android:text="@string/auth_title_google"
                 android:textAppearance="@style/TextAppearance.FitTrack.Title" />
 
             <TextView
@@ -46,177 +53,46 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space_xs"
-                android:text="@string/auth_subtitle_sign_in"
+                android:text="@string/auth_subtitle_google"
                 android:textAppearance="@style/TextAppearance.FitTrack.Caption" />
-
-            <!-- Shown only when creating an account. The name goes on posts
-                 other people read, so it is collected up front rather than
-                 falling back to the email address. -->
-            <LinearLayout
-                android:id="@+id/nameRow"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space_xl"
-                android:orientation="horizontal"
-                android:visibility="gone"
-                tools:visibility="visible">
-
-                <EditText
-                    android:id="@+id/firstNameInput"
-                    style="@style/Widget.FitTrack.Input"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="@dimen/button_height"
-                    android:layout_marginEnd="@dimen/space_sm"
-                    android:paddingHorizontal="@dimen/space_lg"
-                    android:paddingVertical="0dp"
-                    android:gravity="center_vertical"
-                    android:hint="@string/auth_first_name_hint"
-                    android:inputType="textPersonName|textCapWords"
-                    android:autofillHints="personGivenName"
-                    android:maxLength="30"
-                    android:maxLines="1"
-                    android:singleLine="true"
-                    android:textSize="15sp" />
-
-                <EditText
-                    android:id="@+id/lastNameInput"
-                    style="@style/Widget.FitTrack.Input"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="@dimen/button_height"
-                    android:paddingHorizontal="@dimen/space_lg"
-                    android:paddingVertical="0dp"
-                    android:gravity="center_vertical"
-                    android:hint="@string/auth_last_name_hint"
-                    android:inputType="textPersonName|textCapWords"
-                    android:autofillHints="personFamilyName"
-                    android:maxLength="30"
-                    android:maxLines="1"
-                    android:singleLine="true"
-                    android:textSize="15sp" />
-            </LinearLayout>
-
-            <EditText
-                android:id="@+id/emailInput"
-                style="@style/Widget.FitTrack.Input"
-                android:layout_height="@dimen/button_height"
-                android:layout_marginTop="@dimen/space_md"
-                android:paddingHorizontal="@dimen/space_lg"
-                android:paddingVertical="0dp"
-                android:gravity="center_vertical"
-                android:hint="@string/auth_email_hint"
-                android:inputType="textEmailAddress"
-                android:autofillHints="emailAddress"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:textSize="15sp" />
-
-            <EditText
-                android:id="@+id/passwordInput"
-                style="@style/Widget.FitTrack.Input"
-                android:layout_height="@dimen/button_height"
-                android:layout_marginTop="@dimen/space_md"
-                android:paddingHorizontal="@dimen/space_lg"
-                android:paddingVertical="0dp"
-                android:gravity="center_vertical"
-                android:hint="@string/auth_password_hint"
-                android:inputType="textPassword"
-                android:autofillHints="password"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/authMessage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space_md"
-                android:textAppearance="@style/TextAppearance.FitTrack.Caption"
-                android:textColor="@color/danger"
-                android:visibility="gone" />
-
-            <TextView
-                android:id="@+id/primaryBtn"
-                style="@style/Widget.FitTrack.Button.Primary"
                 android:layout_marginTop="@dimen/space_lg"
-                android:text="@string/auth_action_sign_in" />
-
-            <TextView
-                android:id="@+id/forgotBtn"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/touch_target"
-                android:layout_marginTop="@dimen/space_sm"
-                android:gravity="center"
-                android:background="?attr/selectableItemBackground"
-                android:text="@string/auth_forgot_password"
                 android:textAppearance="@style/TextAppearance.FitTrack.Caption"
-                android:focusable="true"
-                android:clickable="true" />
-
-            <!-- Divider between the two sign-in routes. -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space_lg"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_weight="1"
-                    android:background="@color/outline_strong" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/space_md"
-                    android:text="@string/auth_or"
-                    android:textAppearance="@style/TextAppearance.FitTrack.Overline"
-                    android:textColor="@color/text_tertiary" />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_weight="1"
-                    android:background="@color/outline_strong" />
-
-            </LinearLayout>
+                android:visibility="gone"
+                tools:text="No Google account available on this device."
+                tools:visibility="visible" />
 
             <TextView
                 android:id="@+id/googleBtn"
-                style="@style/Widget.FitTrack.Button.Secondary"
-                android:layout_marginTop="@dimen/space_lg"
+                style="@style/Widget.FitTrack.Button.Primary"
+                android:layout_marginTop="@dimen/space_xxl"
                 android:text="@string/auth_action_google" />
 
             <TextView
-                android:id="@+id/skipBtn"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/touch_target"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space_md"
                 android:gravity="center"
-                android:background="?attr/selectableItemBackground"
-                android:text="@string/auth_skip"
+                android:text="@string/auth_google_explainer"
                 android:textAppearance="@style/TextAppearance.FitTrack.Caption"
-                android:focusable="true"
-                android:clickable="true" />
+                android:textColor="@color/text_tertiary" />
 
+            <!-- The app is offline-first, so an account has never been required.
+                 Skipping keeps everything working locally; signing in later
+                 adopts that data. Communities are the one part that needs an
+                 account, because everything in them is attributed. -->
             <TextView
-                android:id="@+id/toggleModeBtn"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/touch_target"
-                android:layout_marginTop="@dimen/space_lg"
-                android:gravity="center"
-                android:background="?attr/selectableItemBackground"
-                android:text="@string/auth_toggle_to_sign_up"
-                android:textColor="@color/brand_bright"
-                android:textSize="14sp"
-                android:fontFamily="sans-serif-medium"
-                android:focusable="true"
-                android:clickable="true" />
+                android:id="@+id/skipBtn"
+                style="@style/Widget.FitTrack.Button.Secondary"
+                android:layout_marginTop="@dimen/space_xl"
+                android:text="@string/auth_skip" />
 
         </LinearLayout>
+
     </ScrollView>
 
     <ProgressBar

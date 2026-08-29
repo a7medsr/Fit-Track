@@ -3,13 +3,10 @@ package com.example.fittrack.ui.auth
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -24,6 +21,10 @@ import javax.inject.Inject
 /**
  * The launcher screen. When a session already exists it forwards to the
  * dashboard without drawing anything, so a signed-in user never sees it.
+ *
+ * Google is the only sign-in method. That is what makes the name and email on
+ * an account something Google has verified rather than something the user
+ * typed, which matters now that both are shown to strangers in a community.
  */
 @AndroidEntryPoint
 class SignInActivity : AppCompatActivity() {
@@ -33,16 +34,8 @@ class SignInActivity : AppCompatActivity() {
     @Inject
     lateinit var googleCredentialClient: GoogleCredentialClient
 
-    private lateinit var emailInput: EditText
-    private lateinit var passwordInput: EditText
-    private lateinit var firstNameInput: EditText
-    private lateinit var lastNameInput: EditText
-    private lateinit var nameRow: View
-    private lateinit var authTitle: TextView
-    private lateinit var authSubtitle: TextView
     private lateinit var authMessage: TextView
-    private lateinit var primaryBtn: TextView
-    private lateinit var toggleModeBtn: TextView
+    private lateinit var googleBtn: TextView
     private lateinit var progress: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,31 +48,11 @@ class SignInActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_sign_in)
 
-        emailInput = findViewById(R.id.emailInput)
-        passwordInput = findViewById(R.id.passwordInput)
-        firstNameInput = findViewById(R.id.firstNameInput)
-        lastNameInput = findViewById(R.id.lastNameInput)
-        nameRow = findViewById(R.id.nameRow)
-        authTitle = findViewById(R.id.authTitle)
-        authSubtitle = findViewById(R.id.authSubtitle)
         authMessage = findViewById(R.id.authMessage)
-        primaryBtn = findViewById(R.id.primaryBtn)
-        toggleModeBtn = findViewById(R.id.toggleModeBtn)
+        googleBtn = findViewById(R.id.googleBtn)
         progress = findViewById(R.id.authProgress)
 
-        primaryBtn.setOnClickListener {
-            viewModel.submitEmail(
-                emailInput.text.toString(),
-                passwordInput.text.toString(),
-                firstNameInput.text.toString(),
-                lastNameInput.text.toString()
-            )
-        }
-        toggleModeBtn.setOnClickListener { viewModel.toggleMode() }
-        findViewById<View>(R.id.forgotBtn).setOnClickListener {
-            viewModel.sendPasswordReset(emailInput.text.toString())
-        }
-        findViewById<View>(R.id.googleBtn).setOnClickListener { startGoogleSignIn() }
+        googleBtn.setOnClickListener { startGoogleSignIn() }
         // The app is offline-first, so an account is optional. Skipping keeps
         // everything working locally; signing in later adopts that data.
         findViewById<View>(R.id.skipBtn).setOnClickListener { openApp() }
@@ -104,44 +77,13 @@ class SignInActivity : AppCompatActivity() {
     }
 
     private fun render(state: SignInFormState) {
-        val signingUp = state.mode == AuthMode.SIGN_UP
-
-        // Only asked for when creating an account. The name is shown to other
-        // people in a community, so it cannot be skipped there -- but there is
-        // no reason to ask an existing account for it again.
-        nameRow.visibility = if (signingUp) View.VISIBLE else View.GONE
-        // A gone view contributes no margin, so the gap above the first visible
-        // field has to move with it, or signing in sits tight under the
-        // subtitle while signing up looks right.
-        emailInput.updateLayoutParams<ViewGroup.MarginLayoutParams> {
-            topMargin = resources.getDimensionPixelSize(
-                if (signingUp) R.dimen.space_md else R.dimen.space_xl
-            )
-        }
-
-        authTitle.setText(
-            if (signingUp) R.string.auth_title_sign_up else R.string.auth_title_sign_in
-        )
-        authSubtitle.setText(
-            if (signingUp) R.string.auth_subtitle_sign_up else R.string.auth_subtitle_sign_in
-        )
-        primaryBtn.setText(
-            if (signingUp) R.string.auth_action_sign_up else R.string.auth_action_sign_in
-        )
-        toggleModeBtn.setText(
-            if (signingUp) R.string.auth_toggle_to_sign_in else R.string.auth_toggle_to_sign_up
-        )
-
-        val message = state.error ?: state.notice
-        authMessage.text = message.orEmpty()
-        authMessage.visibility = if (message == null) View.GONE else View.VISIBLE
-        authMessage.setTextColor(
-            getColor(if (state.error != null) R.color.danger else R.color.brand_bright)
-        )
+        authMessage.text = state.error.orEmpty()
+        authMessage.visibility = if (state.error == null) View.GONE else View.VISIBLE
+        authMessage.setTextColor(getColor(R.color.danger))
 
         progress.visibility = if (state.busy) View.VISIBLE else View.GONE
-        primaryBtn.isEnabled = !state.busy
-        primaryBtn.alpha = if (state.busy) 0.5f else 1f
+        googleBtn.isEnabled = !state.busy
+        googleBtn.alpha = if (state.busy) 0.5f else 1f
     }
 
     private fun startGoogleSignIn() {

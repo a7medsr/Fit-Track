@@ -4,10 +4,7 @@ import com.example.fittrack.domain.model.AuthOutcome
 import com.example.fittrack.domain.model.AuthUser
 import com.example.fittrack.domain.repository.AuthRepository
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
-import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
-import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.UserProfileChangeRequest
@@ -35,27 +32,11 @@ class AuthRepositoryImpl @Inject constructor(
         awaitClose { firebaseAuth.removeAuthStateListener(listener) }
     }
 
-    override suspend fun signUpWithEmail(
-        email: String,
-        password: String,
-        displayName: String
-    ): AuthOutcome = runAuth {
-        val user = firebaseAuth.createUserWithEmailAndPassword(email.trim(), password)
-            .await().user
-        // Stored on the Firebase account rather than in local preferences, so
-        // the name follows the user to every device without needing to be
-        // synced, and is already present the first time they open a community.
-        user?.updateProfile(
-            UserProfileChangeRequest.Builder()
-                .setDisplayName(displayName.trim())
-                .build()
-        )?.await()
-        // reload() so the in-memory user carries the name the very next time it
-        // is read; without it currentUser.displayName stays null until the
-        // token is refreshed, and the first community post goes out unnamed.
-        user?.reload()?.await()
-        firebaseAuth.currentUser ?: user
-    }
+    override suspend fun signInWithGoogle(idToken: String): AuthOutcome =
+        runAuth {
+            val credential = GoogleAuthProvider.getCredential(idToken, null)
+            firebaseAuth.signInWithCredential(credential).await().user
+        }
 
     override suspend fun updateDisplayName(displayName: String): AuthOutcome = runAuth {
         val user = firebaseAuth.currentUser
@@ -67,29 +48,6 @@ class AuthRepositoryImpl @Inject constructor(
         ).await()
         user.reload().await()
         firebaseAuth.currentUser ?: user
-    }
-
-    override suspend fun signInWithEmail(email: String, password: String): AuthOutcome =
-        runAuth {
-            firebaseAuth.signInWithEmailAndPassword(email.trim(), password).await().user
-        }
-
-    override suspend fun signInWithGoogle(idToken: String): AuthOutcome =
-        runAuth {
-            val credential = GoogleAuthProvider.getCredential(idToken, null)
-            firebaseAuth.signInWithCredential(credential).await().user
-        }
-
-    override suspend fun sendPasswordReset(email: String): AuthOutcome {
-        val trimmed = email.trim()
-        if (trimmed.isEmpty()) return AuthOutcome.Failure("Enter your email address first.")
-        return try {
-            firebaseAuth.sendPasswordResetEmail(trimmed).await()
-            // No user to hand back; the caller only cares that it did not fail.
-            AuthOutcome.Success(AuthUser(uid = "", email = trimmed, displayName = null))
-        } catch (e: Exception) {
-            AuthOutcome.Failure(e.toMessage())
-        }
     }
 
     override suspend fun currentIdToken(): String? = try {
@@ -127,17 +85,12 @@ class AuthRepositoryImpl @Inject constructor(
 
     /**
      * Firebase messages are aimed at developers ("The supplied auth credential
-     * is malformed or has expired"), so the common cases get rewritten.
+     * is malformed or has expired"), so the cases a user can actually reach get
+     * rewritten. The password ones went with the password form.
      */
     private fun Exception.toMessage(): String = when (this) {
-        is FirebaseAuthWeakPasswordException ->
-            "That password is too weak. Use at least 6 characters."
         is FirebaseAuthUserCollisionException ->
-            "An account already exists for that email. Try signing in instead."
-        is FirebaseAuthInvalidUserException ->
-            "No account found for that email."
-        is FirebaseAuthInvalidCredentialsException ->
-            "Wrong email or password."
+            "That Google account is already linked to a different sign-in method."
         is IOException ->
             "No connection. Check your network and try again."
         else -> message ?: "Something went wrong. Try again."

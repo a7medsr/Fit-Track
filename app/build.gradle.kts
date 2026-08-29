@@ -99,6 +99,9 @@ dependencies {
     // cancellation a RecyclerView needs; a hand-rolled loader shows the wrong
     // face in a recycled row sooner or later.
     implementation(libs.coil)
+    // Gives an exact handover point from the system splash. Without it the
+    // custom animation starts in onCreate and plays out of sight behind it.
+    implementation(libs.androidx.core.splashscreen)
     testImplementation(libs.kotlinx.coroutines.test)
     // Android ships org.json as a stub that throws in JVM unit tests; this puts
     // the real implementation on the test classpath so parsing can be tested.
